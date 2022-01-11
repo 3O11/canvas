@@ -8,3 +8,5 @@ add_library (stb-image STATIC
 target_include_directories (stb-image INTERFACE
 	"."
 )
+
+set_property(TARGET stb-image PROPERTY CXX_STANDARD 20)
