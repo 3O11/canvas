@@ -2,5 +2,5 @@
 
 project ("canvas")
 
-add_subdirectory ("001-SimpleTestbed")
-add_subdirectory ("900-Common")
+add_subdirectory ("01-ImageCreator")
+add_subdirectory ("Common")
