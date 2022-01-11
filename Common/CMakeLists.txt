@@ -3,6 +3,8 @@ add_library (canvas-common STATIC
 	"Colour/RGB.cpp"
 	"Image/Image.h"
 	"Image/Image.cpp"
+	"Image/Drawing.h"
+	"Image/Drawing.cpp"
 )
 
 target_include_directories (canvas-common INTERFACE
