@@ -3,5 +3,5 @@
 project ("canvas")
 
 add_subdirectory ("01-ImageCreator")
-add_subdirectory ("stb-image")
 add_subdirectory ("Common")
+add_subdirectory ("third-party")
