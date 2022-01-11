@@ -1,4 +1,5 @@
 add_library (canvas-common STATIC
+	"Base/Types.h"
 	"Colour/RGB.h"
 	"Colour/RGB.cpp"
 	"Image/Image.h"
@@ -7,10 +8,14 @@ add_library (canvas-common STATIC
 	"Image/ImageUtils.cpp"
 	"Image/Drawing.h"
 	"Image/Drawing.cpp"
+	"Math/Vector.h"
+	"Math/Vector.cpp"
+	"Math/Matrix.h"
+	"Math/Matrix.cpp"
+	"Math/Point.h"
+	"Math/Point.cpp"
 )
 
-target_include_directories (canvas-common INTERFACE
-	"Image"
 target_include_directories (canvas-common PUBLIC
 	"Base"
 	"Colour"
