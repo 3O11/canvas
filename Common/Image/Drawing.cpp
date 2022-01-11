@@ -4,7 +4,7 @@
 
 namespace cc
 {
-	void Drawing::DrawCircle(Image& img, int32_t xCenter, int32_t yCenter, float radius, const RGB& colour)
+	void Drawing::DrawCircle(Image& img, int32_t xCenter, int32_t yCenter, Float radius, const RGB& colour)
 	{
 		float r = radius * 1.1f; // to have some kind of safety margin
 
@@ -18,9 +18,9 @@ namespace cc
 		{
 			for (int32_t col = left; col < right; ++col)
 			{
-				float xDist = static_cast<float>(col) - xCenter;
-				float yDist = static_cast<float>(row) - yCenter;
-				float dist = std::sqrt(xDist * xDist + yDist * yDist);
+				Float xDist = static_cast<float>(col) - xCenter;
+				Float yDist = static_cast<float>(row) - yCenter;
+				Float dist = std::sqrt(xDist * xDist + yDist * yDist);
 
 				if (dist < radius)
 				{

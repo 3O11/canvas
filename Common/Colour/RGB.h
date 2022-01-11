@@ -3,6 +3,8 @@
 
 #include <cstdint>
 
+#include "Types.h"
+
 namespace cc
 {
 	struct RGB;
@@ -13,28 +15,28 @@ namespace cc
 	struct RGB final
 	{
 		RGB();
-		RGB(float bw);
-		RGB(float r, float g, float b);
+		RGB(Float bw);
+		RGB(Float r, Float g, Float b);
 		RGB(const RGB8& rgb);
 
-		float r;
-		float g;
-		float b;
+		Float r;
+		Float g;
+		Float b;
 	};
 
 	struct RGBA final
 	{
 		RGBA();
-		RGBA(float bw);
-		RGBA(float r, float g, float b);
-		RGBA(float r, float g, float b, float a);
+		RGBA(Float bw);
+		RGBA(Float r, Float g, Float b);
+		RGBA(Float r, Float g, Float b, Float a);
 		RGBA(const RGB& rgb);
 		RGBA(const RGBA8& rgba);
 
-		float r;
-		float g;
-		float b;
-		float a;
+		Float r;
+		Float g;
+		Float b;
+		Float a;
 	};
 
 	struct RGB8 final

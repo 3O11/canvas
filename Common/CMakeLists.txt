@@ -11,7 +11,11 @@ add_library (canvas-common STATIC
 
 target_include_directories (canvas-common INTERFACE
 	"Image"
+target_include_directories (canvas-common PUBLIC
+	"Base"
 	"Colour"
+	"Image"
+	"Math"
 )
 
 target_link_libraries (canvas-common PRIVATE

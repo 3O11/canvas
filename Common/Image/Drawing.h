@@ -1,6 +1,7 @@
 #ifndef _CC_DRAWING_H
 #define _CC_DRAWING_H
 
+#include "Types.h"
 #include "Image.h"
 
 namespace cc
@@ -8,7 +9,7 @@ namespace cc
 	class Drawing
 	{
 	public:
-		static void DrawCircle(Image& img, int32_t xCenter, int32_t yCenter, float radius, const RGB& colour);
+		static void DrawCircle(Image& img, int32_t xCenter, int32_t yCenter, Float radius, const RGB& colour);
 	private:
 	};
 }

@@ -8,11 +8,11 @@ namespace cc
 		: r(0.0f), g(0.0f), b(0.0f)
 	{}
 
-	RGB::RGB(float bw)
+	RGB::RGB(Float bw)
 		: r(bw), g(bw), b(bw)
 	{}
 
-	RGB::RGB(float r, float g, float b)
+	RGB::RGB(Float r, Float g, Float b)
 		: r(r), g(g), b(b)
 	{}
 
@@ -26,15 +26,15 @@ namespace cc
 		: r(0.0f), g(0.0f), b(0.0f), a(1.0f)
 	{}
 
-	RGBA::RGBA(float bw)
+	RGBA::RGBA(Float bw)
 		: r(bw), g(bw), b(bw), a(1.0f)
 	{}
 
-	RGBA::RGBA(float r, float g, float b)
+	RGBA::RGBA(Float r, Float g, Float b)
 		: r(r), g(g), b(b), a(1.0f)
 	{}
 
-	RGBA::RGBA(float r, float g, float b, float a)
+	RGBA::RGBA(Float r, Float g, Float b, Float a)
 		: r(r), g(g), b(b), a(a)
 	{}
 
@@ -80,6 +80,10 @@ namespace cc
 
 	RGBA8::RGBA8(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 		: r(r), g(g), b(b), a(a)
+	{}
+
+	RGBA8::RGBA8(const RGB8 & rgb)
+		: r(rgb.r), g(rgb.g), b(rgb.b), a(255)
 	{}
 
 	RGBA8::RGBA8(const RGBA& rgba)
