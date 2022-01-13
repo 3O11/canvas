@@ -2,6 +2,7 @@ add_library (canvas-common STATIC
 	"Base/Types.h"
 	"Colour/RGB.h"
 	"Colour/RGB.cpp"
+	"Colour/ColourAtlas.h"
 	"Colour/ColourUtils.h"
 	"Colour/ColourUtils.cpp"
 	"Image/Image.h"

@@ -130,7 +130,7 @@ namespace cc
 		}
 
 		Image8 img(width, height);
-		for (size_t i = 0; i < static_cast<size_t>(width * height); ++i)
+		for (size_t i = 0; i < static_cast<size_t>(width) * height; ++i)
 		{
 			size_t pxPos = i * 4;
 			img[i] = { raw_img[pxPos], raw_img[pxPos + 1], raw_img[pxPos + 2], raw_img[pxPos + 3] };
