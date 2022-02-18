@@ -1,5 +1,8 @@
 #ifndef _CGG_LOGO_H
-#define _CGG_LOHO_H
+#define _CGG_LOGO_H
+
+#include <vector>
+#include <RGB.h>
 
 inline const std::vector<std::tuple<float, float, float>> cgg_circles =
 {

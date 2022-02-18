@@ -2,6 +2,7 @@
 #define _CC_TYPES_H
 
 #include <cstdint>
+#include <cstddef>
 
 namespace cc
 {

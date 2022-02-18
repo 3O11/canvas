@@ -40,9 +40,9 @@ namespace cc
 		static void  Save(std::string_view filepath, const Image& image, ImageType type);
 
 	private:
+		std::vector<RGBA> m_Pixels;
 		size_t m_Width;
 		size_t m_Height;
-		std::vector<RGBA> m_Pixels;
 	};
 
 	class Image8 final
@@ -66,9 +66,9 @@ namespace cc
 		static void                  Save(std::string_view filepath, const Image8& image, ImageType type);
 
 	private:
+		std::vector<RGBA8> m_Pixels;
 		size_t m_Width;
 		size_t m_Height;
-		std::vector<RGBA8> m_Pixels;
 	};
 }
 

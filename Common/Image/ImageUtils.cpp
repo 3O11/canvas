@@ -9,9 +9,9 @@ namespace cc
 		Image result(img.Width(), img.Height());
 		int32_t aaRadius = 1;
 
-		for (int32_t row = 0; row < img.Height(); ++row)
+		for (int32_t row = 0; row < (int32_t)img.Height(); ++row)
 		{
-			for (int32_t col = 0; col < img.Height(); ++col)
+			for (int32_t col = 0; col < (int32_t)img.Height(); ++col)
 			{
 				RGBA sum;
 				size_t sumCount = 0;
@@ -20,7 +20,7 @@ namespace cc
 				{
 					for (int32_t col_offset = -aaRadius; col_offset <= aaRadius; ++col_offset)
 					{
-						if (row + row_offset < 0 || row + row_offset >= img.Height() || col + col_offset < 0 || col + col_offset >= img.Width()) continue;
+						if (row + row_offset < 0 || row + row_offset >= (int32_t)img.Height() || col + col_offset < 0 || col + col_offset >= (int32_t)img.Width()) continue;
 
 						sum += img(col + col_offset, row + row_offset);
 						++sumCount;

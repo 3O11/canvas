@@ -33,6 +33,8 @@
 
 # Build files
 **/out
+**/build
 
 # Visual Studio clutter
 **/.vs
+.DS_Store
