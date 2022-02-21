@@ -28,4 +28,9 @@ namespace cc
 	{
 		return {a.r / s, a.g / s, a.b / s, a.a / s};
 	}
+
+	RGBA operator*(const RGBA& a, Float s)
+	{
+		return {a.r * s, a.g * s, a.b * s};
+	}
 }

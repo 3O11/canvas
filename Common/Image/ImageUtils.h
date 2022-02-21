@@ -8,6 +8,7 @@ namespace cc
 	namespace ImageUtils
 	{
 		void AntiAlias(Image& img);
+		void Greyscale(Image& img);
 	}
 }
 

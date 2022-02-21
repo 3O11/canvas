@@ -25,12 +25,12 @@ namespace cc
 
 	RGBA& Image::operator() (int32_t x, int32_t y)
 	{
-		return m_Pixels[ (y * m_Height) + x ];
+		return m_Pixels[ (y * m_Width) + x ];
 	}
 
 	const RGBA& Image::operator() (int32_t x, int32_t y) const
 	{
-		return m_Pixels[(y * m_Height) + x];
+		return m_Pixels[(y * m_Width) + x];
 	}
 
 	RGBA& Image::operator[] (int32_t pixelIndex)
@@ -71,11 +71,11 @@ namespace cc
 	// Image8
 
 	Image8::Image8(int32_t width, int32_t height)
-		: m_Pixels(width* height, { 0, 0, 0, 255 }), m_Width(width), m_Height(height)
+		: m_Pixels(width * height, { 0, 0, 0, 255 }), m_Width(width), m_Height(height)
 	{}
 
 	Image8::Image8(int32_t width, int32_t height, const RGBA8& fillColour)
-		: m_Pixels(width* height, fillColour), m_Width(width), m_Height(height)
+		: m_Pixels(width * height, fillColour), m_Width(width), m_Height(height)
 	{}
 
 	Image8::Image8(const Image& img)

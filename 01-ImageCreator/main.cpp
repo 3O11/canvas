@@ -33,5 +33,15 @@ int main(int argc, char ** argv)
 
 	cc::Image::Save("img.png", img, cc::ImageType::PNG);
 
-	std::cout << "Hello World!\n";
+	std::cout << "Generated Image!\n";
+
+    auto loaded = cc::Image::Load("br.jpg");
+    if (!loaded)
+    {
+        std::cout << "Failed to load the image!\n";
+    }
+
+    cc::ImageUtils::Greyscale(*loaded);
+
+    cc::Image::Save("br-gr.png", *loaded, cc::ImageType::PNG);
 }
