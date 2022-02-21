@@ -17,6 +17,8 @@ add_library (canvas-common STATIC
 	"Math/Matrix.cpp"
 	"Math/Point.h"
 	"Math/Point.cpp"
+	"Math/Transforms.h"
+	"Math/Transforms.cpp"
 )
 
 target_include_directories (canvas-common PUBLIC
