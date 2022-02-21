@@ -19,6 +19,8 @@ add_library (canvas-common STATIC
 	"Math/Point.cpp"
 	"Math/Transforms.h"
 	"Math/Transforms.cpp"
+	"Animation/BasicAnimator.h"
+	"Animation/BasicAnimator.cpp"
 )
 
 target_include_directories (canvas-common PUBLIC
