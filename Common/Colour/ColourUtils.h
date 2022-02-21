@@ -9,7 +9,7 @@ namespace cc
 	RGB& operator+= (RGB& a, const RGB& b);
 
 	RGBA& operator+= (RGBA& a, const RGBA& b);
-	RGBA  operator/  (const RGBA& a, float s);
+	RGBA  operator/  (const RGBA& a, Float s);
 }
 
 #endif //_CC_COLOUR_UTILS_H

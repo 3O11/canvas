@@ -9,51 +9,51 @@ namespace cc
 {
 	// Image
 
-	Image::Image(size_t width, size_t height)
-		: m_Pixels(width* height, {0.0f, 0.0f, 0.0f, 1.0f}), m_Width(width), m_Height(height)
+	Image::Image(int32_t width, int32_t height)
+		: m_Pixels(width * height, {0.0f, 0.0f, 0.0f, 1.0f}), m_Width(width), m_Height(height)
 	{}
 
-	Image::Image(size_t width, size_t height, const RGBA& fillColour)
+	Image::Image(int32_t width, int32_t height, const RGBA& fillColour)
 		: m_Pixels(width * height, fillColour), m_Width(width), m_Height(height)
 	{}
 
 	Image::Image(const Image8& img8)
 		: m_Pixels(img8.Width() * img8.Height()), m_Width(img8.Width()), m_Height(img8.Height())
 	{
-		for (size_t i = 0; i < img8.PixelCount(); i++) m_Pixels[i] = img8[i];
+		for (int32_t i = 0; i < img8.PixelCount(); i++) m_Pixels[i] = img8[i];
 	}
 
-	RGBA& Image::operator() (size_t x, size_t y)
+	RGBA& Image::operator() (int32_t x, int32_t y)
 	{
 		return m_Pixels[ (y * m_Height) + x ];
 	}
 
-	const RGBA& Image::operator() (size_t x, size_t y) const
+	const RGBA& Image::operator() (int32_t x, int32_t y) const
 	{
 		return m_Pixels[(y * m_Height) + x];
 	}
 
-	RGBA& Image::operator[] (size_t pixelIndex)
+	RGBA& Image::operator[] (int32_t pixelIndex)
 	{
 		return m_Pixels[pixelIndex];
 	}
 
-	const RGBA& Image::operator[] (size_t pixelIndex) const
+	const RGBA& Image::operator[] (int32_t pixelIndex) const
 	{
 		return m_Pixels[pixelIndex];
 	}
 
-	size_t Image::Width() const
+	int32_t Image::Width() const
 	{
 		return m_Width;
 	}
 
-	size_t Image::Height() const
+	int32_t Image::Height() const
 	{
 		return m_Height;
 	}
 
-	size_t Image::PixelCount() const
+	int32_t Image::PixelCount() const
 	{
 		return m_Width * m_Height;
 	}
@@ -70,51 +70,51 @@ namespace cc
 
 	// Image8
 
-	Image8::Image8(size_t width, size_t height)
+	Image8::Image8(int32_t width, int32_t height)
 		: m_Pixels(width* height, { 0, 0, 0, 255 }), m_Width(width), m_Height(height)
 	{}
 
-	Image8::Image8(size_t width, size_t height, const RGBA8& fillColour)
+	Image8::Image8(int32_t width, int32_t height, const RGBA8& fillColour)
 		: m_Pixels(width* height, fillColour), m_Width(width), m_Height(height)
 	{}
 
 	Image8::Image8(const Image& img)
 		: m_Pixels(img.Width()* img.Height()), m_Width(img.Width()), m_Height(img.Height())
 	{
-		for (size_t i = 0; i < img.PixelCount(); i++) m_Pixels[i] = img[i];
+		for (int32_t i = 0; i < img.PixelCount(); i++) m_Pixels[i] = img[i];
 	}
 
-	RGBA8& Image8::operator() (size_t x, size_t y)
+	RGBA8& Image8::operator() (int32_t x, int32_t y)
 	{
 		return m_Pixels[(y * m_Height) + x];
 	}
 
-	const RGBA8& Image8::operator() (size_t x, size_t y) const
+	const RGBA8& Image8::operator() (int32_t x, int32_t y) const
 	{
 		return m_Pixels[(y * m_Height) + x];
 	}
 
-	RGBA8& Image8::operator[] (size_t pixelIndex)
+	RGBA8& Image8::operator[] (int32_t pixelIndex)
 	{
 		return m_Pixels[pixelIndex];
 	}
 
-	const RGBA8& Image8::operator[] (size_t pixelIndex) const
+	const RGBA8& Image8::operator[] (int32_t pixelIndex) const
 	{
 		return m_Pixels[pixelIndex];
 	}
 
-	size_t Image8::Width() const
+	int32_t Image8::Width() const
 	{
 		return m_Width;
 	}
 
-	size_t Image8::Height() const
+	int32_t Image8::Height() const
 	{
 		return m_Height;
 	}
 
-	size_t Image8::PixelCount() const
+	int32_t Image8::PixelCount() const
 	{
 		return m_Width * m_Height;
 	}
@@ -130,9 +130,9 @@ namespace cc
 		}
 
 		Image8 img(width, height);
-		for (size_t i = 0; i < static_cast<size_t>(width) * height; ++i)
+		for (int32_t i = 0; i < static_cast<int32_t>(width) * height; ++i)
 		{
-			size_t pxPos = i * 4;
+			int32_t pxPos = i * 4;
 			img[i] = { raw_img[pxPos], raw_img[pxPos + 1], raw_img[pxPos + 2], raw_img[pxPos + 3] };
 		}
 
