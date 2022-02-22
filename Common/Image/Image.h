@@ -32,6 +32,8 @@ namespace cc
 		RGBA& operator[] (int32_t pixelIndex);
 		const RGBA& operator[] (int32_t pixelIndex) const;
 
+		void Fill(const RGBA& fillColour);
+
 		int32_t Width() const;
 		int32_t Height() const;
 		int32_t PixelCount() const;
@@ -57,6 +59,8 @@ namespace cc
 
 		RGBA8& operator[] (int32_t pixelIndex);
 		const RGBA8& operator[] (int32_t pixelIndex) const;
+
+		void Fill(const RGBA8& fillColour);
 
 		int32_t Width() const;
 		int32_t Height() const;

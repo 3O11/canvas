@@ -28,6 +28,7 @@ target_include_directories (canvas-common PUBLIC
 	"Colour"
 	"Image"
 	"Math"
+	"Animation"
 )
 
 target_link_libraries (canvas-common PRIVATE

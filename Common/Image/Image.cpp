@@ -43,6 +43,14 @@ namespace cc
 		return m_Pixels[pixelIndex];
 	}
 
+	void Image::Fill(const RGBA& fillColour)
+	{
+		for (size_t i = 0; i < m_Pixels.size(); i++)
+		{
+			m_Pixels[i] = fillColour;
+		}
+	}
+
 	int32_t Image::Width() const
 	{
 		return m_Width;
@@ -102,6 +110,14 @@ namespace cc
 	const RGBA8& Image8::operator[] (int32_t pixelIndex) const
 	{
 		return m_Pixels[pixelIndex];
+	}
+
+	void Image8::Fill(const RGBA8& fillColour)
+	{
+		for (size_t i = 0; i < m_Pixels.size(); i++)
+		{
+			m_Pixels[i] = fillColour;
+		}
 	}
 
 	int32_t Image8::Width() const

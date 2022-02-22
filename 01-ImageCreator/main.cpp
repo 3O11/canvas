@@ -4,11 +4,14 @@
 #include <Image.h>
 #include <Drawing.h>
 #include <ImageUtils.h>
+#include <BasicAnimator.h>
 
 #include "cgg_logo.h"
 
 int main(int argc, char ** argv)
 {
+    // Test Image generation
+
 	cc::Image img(1024, 1024);
 
     int32_t circleNum = 0;
@@ -35,13 +38,24 @@ int main(int argc, char ** argv)
 
 	std::cout << "Generated Image!\n";
 
-    auto loaded = cc::Image::Load("br.jpg");
+    // Test BW conversion
+
+    auto loaded = cc::Image::Load("DarkAlley.jpeg");
     if (!loaded)
     {
         std::cout << "Failed to load the image!\n";
+        return -1;
     }
 
     cc::ImageUtils::Greyscale(*loaded);
 
-    cc::Image::Save("br-gr.png", *loaded, cc::ImageType::PNG);
+    cc::Image::Save("DarkAlley-gr.png", *loaded, cc::ImageType::PNG);
+
+    std::cout << "Converted image to Greyscale!\n";
+
+    // Test Animator
+
+    cc::BasicAnimator animator;
+
+    animator.Animate([](cc::Image& img, cc::Float t){ cc::Drawing::DrawCircle(img, t * 1000, t * 700, 10, {1.0f, 0.0f, 0.0f}); });
 }
