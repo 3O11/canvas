@@ -36,6 +36,8 @@ target_include_directories (canvas PUBLIC
 add_subdirectory(".third-party")
 target_link_libraries (canvas PRIVATE
 	stb-image
+	glfw
+	glad
 )
 
 set_property(TARGET canvas PROPERTY CXX_STANDARD 20)
