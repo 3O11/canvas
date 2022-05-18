@@ -37,4 +37,5 @@
 
 # Visual Studio clutter
 **/.vs
+**/.vscode
 .DS_Store
