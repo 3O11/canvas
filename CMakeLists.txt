@@ -1,7 +1,6 @@
-﻿cmake_minimum_required (VERSION 3.20)
+﻿cmake_minimum_required (VERSION 3.22)
 
 project ("canvas")
 
-add_subdirectory ("01-ImageCreator")
-add_subdirectory ("Common")
-add_subdirectory ("third-party")
+add_subdirectory("Canvas")
+add_subdirectory("Examples")

@@ -1,4 +1,4 @@
-add_library (canvas-common STATIC
+add_library (canvas STATIC
 	"Base/Types.h"
 	"Colour/RGB.h"
 	"Colour/RGB.cpp"
@@ -23,7 +23,7 @@ add_library (canvas-common STATIC
 	"Animation/BasicAnimator.cpp"
 )
 
-target_include_directories (canvas-common PUBLIC
+target_include_directories (canvas PUBLIC
 	"Base"
 	"Colour"
 	"Image"
@@ -31,14 +31,15 @@ target_include_directories (canvas-common PUBLIC
 	"Animation"
 )
 
-target_link_libraries (canvas-common PRIVATE
+add_subdirectory("third-party")
+target_link_libraries (canvas PRIVATE
 	stb-image	
 )
 
-set_property(TARGET canvas-common PROPERTY CXX_STANDARD 20)
+set_property(TARGET canvas PROPERTY CXX_STANDARD 20)
 
 if(MSVC)
-  target_compile_options(canvas-common PRIVATE /W4 /WX)
+  target_compile_options(canvas PRIVATE /W4 /WX)
 else()
-  target_compile_options(canvas-common PRIVATE -Wall -Wextra -Wpedantic -Werror)
+  target_compile_options(canvas PRIVATE -Wall -Wextra -Wpedantic -Werror)
 endif()
