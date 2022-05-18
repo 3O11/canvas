@@ -2,22 +2,44 @@
 
 #ifndef REFERENCE
 
+#include "Window.h"
 #include "ImguiWindow.h"
+
+#include <imgui.h>
+#include <backends/imgui_impl_opengl3.h>
+#include <backends/imgui_impl_glfw.h>
 
 int main()
 {
-    cc::ImguiWindow window;
-
-    bool demo_window;
-
-    while (!window.IsClosed())
     {
-        window.BeginFrame();
+        cc::ImguiWindow window;
 
-        ImGui::ShowDemoWindow(&demo_window);
+        window.SetClearColour({1.0f, 0.0f, 0.5f, 1.0f});
 
-        window.EndFrame();
+        bool demo_window = true;
+
+        while(!window.IsClosed())
+        {
+            window.BeginFrame();
+
+            ImGui::ShowDemoWindow(&demo_window);
+
+            window.EndFrame();
+        }
     }
+
+    {/*
+        cc::Window window;
+
+        window.SetClearColour({0.0f, 1.0, 0.5f, 1.0f});
+
+        while (!window.IsClosed())
+        {
+            window.Update();
+            glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+            window.SwapBuffers();
+        }
+    */}
 }
 
 #else
@@ -49,48 +71,18 @@ int main(void)
  
     glfwSetErrorCallback(error_callback);
  
-    if (!glfwInit())
-        exit(EXIT_FAILURE);
- 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwInit();
 
-#if defined(IMGUI_IMPL_OPENGL_ES2)
-    // GL ES 2.0 + GLSL 100
-    const char* glsl_version = "#version 100";
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
-#elif defined(__APPLE__)
-    // GL 3.2 + GLSL 150
-    const char* glsl_version = "#version 150";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
-#else
-    // GL 3.0 + GLSL 130
-    const char* glsl_version = "#version 130";
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
-#endif
 
     window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
-    if (!window)
-    {
-        glfwTerminate();
-        exit(EXIT_FAILURE);
-    }
- 
-    glfwSetKeyCallback(window, key_callback);
  
     glfwMakeContextCurrent(window);
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
     glfwSwapInterval(1);
-
-    glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -100,7 +92,7 @@ int main(void)
     ImGui::StyleColorsDark();
 
     ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init(glsl_version);
+    ImGui_ImplOpenGL3_Init("#version 150");
 
     // Our state
     bool show_demo_window = true;
@@ -109,7 +101,6 @@ int main(void)
  
     while (!glfwWindowShouldClose(window))
     {
-        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         glfwPollEvents();
 
         ImGui_ImplOpenGL3_NewFrame();
