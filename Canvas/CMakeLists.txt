@@ -19,6 +19,8 @@ add_library (canvas STATIC
 	"Math/Point.cpp"
 	"Math/Transforms.h"
 	"Math/Transforms.cpp"
+	"Math/Quaternion.h"
+	"Math/Quaternion.cpp"
 	"Animation/BasicAnimator.h"
 	"Animation/BasicAnimator.cpp"
 )
