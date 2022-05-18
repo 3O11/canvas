@@ -2,11 +2,10 @@
 #define _CC_BASE_WINDOW_H
 
 #include <glad/glad.h>
+#include "Types.h"
+#include "RGB.h"
 
 #include <string>
-#include <cstdint>
-
-#include "RGB.h"
 
 struct GLFWwindow;
 
@@ -15,10 +14,10 @@ namespace cc
     class Window
     {
     public:
-        Window(const std::string& title, int32_t width = 640, int32_t height = 480);
+        Window(const std::string& title = "GLFW Window", int32_t width = 640, int32_t height = 480);
 
-        virtual void BeginFrame();
-        virtual void EndFrame();
+        void Update();
+        void SwapBuffers();
 
         void Close();
         bool IsClosed() const;

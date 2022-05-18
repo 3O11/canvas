@@ -15,31 +15,29 @@ namespace cc
 
         m_glfwWindow = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+
         glfwMakeContextCurrent(m_glfwWindow);
         gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     }
 
-    void Window::BeginFrame()
-    { 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glfwPollEvents();
-    }
-
-    void Window::EndFrame()
+    void Window::Update()
     {
+        glfwPollEvents();
         m_closed = glfwWindowShouldClose(m_glfwWindow);
+    }
+
+    void Window::SwapBuffers()
+    {
         glfwSwapBuffers(m_glfwWindow);
     }
 
     void Window::Close()
     {
         glfwSetWindowShouldClose(m_glfwWindow, true);
-        m_closed = true;
     }
 
     bool Window::IsClosed() const
@@ -57,6 +55,7 @@ namespace cc
         m_width = width;
         m_height = height;
         glfwSetWindowSize(m_glfwWindow, width, height);
+        glViewport(0, 0, m_width, m_height);
     }
 
     int32_t Window::GetWidth() const
@@ -76,8 +75,8 @@ namespace cc
 
     void Window::SetClearColour(const RGBA& clearColour)
     {
-        glClearColor(m_clearColour.r, m_clearColour.g, m_clearColour.b, m_clearColour.a);
         m_clearColour = clearColour;
+        glClearColor(m_clearColour.r, m_clearColour.g, m_clearColour.b, m_clearColour.a);
     }
 
     Window::~Window()
