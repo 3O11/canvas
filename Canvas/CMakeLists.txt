@@ -33,15 +33,15 @@ target_include_directories (canvas PUBLIC
 	"Animation"
 )
 
-add_subdirectory("third-party")
+add_subdirectory(".third-party")
 target_link_libraries (canvas PRIVATE
-	stb-image	
+	stb-image
 )
 
 set_property(TARGET canvas PROPERTY CXX_STANDARD 20)
 
 if(MSVC)
-  target_compile_options(canvas PRIVATE /W4 /WX)
+	target_compile_options(canvas PRIVATE /W4 /WX)
 else()
-  target_compile_options(canvas PRIVATE -Wall -Wextra -Wpedantic -Werror)
+	target_compile_options(canvas PRIVATE -Wall -Wextra -Wpedantic -Werror)
 endif()
