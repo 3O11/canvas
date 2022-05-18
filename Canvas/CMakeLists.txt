@@ -23,6 +23,10 @@ add_library (canvas STATIC
 	"Math/Quaternion.cpp"
 	"Animation/BasicAnimator.h"
 	"Animation/BasicAnimator.cpp"
+	"Window/Window.h"
+	"Window/Window.cpp"
+	"Window/ImguiWindow.h"
+	"Window/ImguiWindow.cpp"
 )
 
 target_include_directories (canvas PUBLIC
@@ -31,12 +35,17 @@ target_include_directories (canvas PUBLIC
 	"Image"
 	"Math"
 	"Animation"
+	"Window"
 )
 
 add_subdirectory(".third-party")
 target_link_libraries (canvas PRIVATE
 	stb-image
 	glfw
+)
+
+target_link_libraries(canvas PUBLIC
+	imgui
 	glad
 )
 
