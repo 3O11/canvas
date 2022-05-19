@@ -26,7 +26,6 @@ add_library (canvas STATIC
 	"Window/Window.h"
 	"Window/Window.cpp"
 	"Window/ImguiWindow.h"
-	"Window/ImguiWindow.cpp"
 )
 
 target_include_directories (canvas PUBLIC
