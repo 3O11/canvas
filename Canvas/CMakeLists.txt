@@ -50,8 +50,9 @@ target_link_libraries (canvas PRIVATE
 )
 
 target_link_libraries(canvas PUBLIC
-	imgui
 	glad
+	glfw
+	imgui
 )
 
 set_property(TARGET canvas PROPERTY CXX_STANDARD 20)
