@@ -147,12 +147,12 @@ int main()
 
         ImGui::Begin("Options");
 
-        ImGui::SliderScalar("x^2: ", ImGuiDataType_Double, &x2, &min, &max);
-        ImGui::SliderScalar("xy: ",  ImGuiDataType_Double, &xy, &min, &max);
-        ImGui::SliderScalar("y^2: ", ImGuiDataType_Double, &y2, &min, &max);
-        ImGui::SliderScalar("x: ",   ImGuiDataType_Double, &x,  &min, &max);
-        ImGui::SliderScalar("y: ",   ImGuiDataType_Double, &y,  &min, &max);
-        ImGui::SliderScalar("c: ",   ImGuiDataType_Double, &c,  &min, &max);
+        ImGui::SliderScalar("", ImGuiDataType_Double, &x2, &min, &max, "%.10f x^2");
+        ImGui::SliderScalar("", ImGuiDataType_Double, &xy, &min, &max, "%.10f xy");
+        ImGui::SliderScalar("", ImGuiDataType_Double, &y2, &min, &max, "%.10f y^2");
+        ImGui::SliderScalar("", ImGuiDataType_Double, &x,  &min, &max, "%.10f x");
+        ImGui::SliderScalar("", ImGuiDataType_Double, &y,  &min, &max, "%.10f y");
+        ImGui::SliderScalar("", ImGuiDataType_Double, &c,  &min, &max, "%.10f c");
 
         ImGui::SliderScalar("scale: ", ImGuiDataType_Double, &scale, &scaleMin, &scaleMax);
         ImGui::SliderScalar("threshold: ", ImGuiDataType_Double, &threshold, &thresholdMin, &thresholdMax);
