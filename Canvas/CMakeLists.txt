@@ -23,6 +23,11 @@ add_library (canvas STATIC
 	"Math/Quaternion.cpp"
 	"Animation/BasicAnimator.h"
 	"Animation/BasicAnimator.cpp"
+	"Drawing/Shape.h"
+	"Drawing/Canvas.h"
+	"Drawing/Canvas.cpp"
+	"Drawing/Shapes/Circle.h"
+	"Drawing/Shapes/Circle.cpp"
 	"Window/Window.h"
 	"Window/Window.cpp"
 	"Window/ImguiWindow.h"
@@ -34,6 +39,7 @@ target_include_directories (canvas PUBLIC
 	"Image"
 	"Math"
 	"Animation"
+	"Drawing"
 	"Window"
 )
 
