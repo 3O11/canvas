@@ -154,8 +154,8 @@ int main()
         ImGui::SliderScalar("", ImGuiDataType_Double, &y,  &min, &max, "%.10f y");
         ImGui::SliderScalar("", ImGuiDataType_Double, &c,  &min, &max, "%.10f c");
 
-        ImGui::SliderScalar("scale: ", ImGuiDataType_Double, &scale, &scaleMin, &scaleMax);
-        ImGui::SliderScalar("threshold: ", ImGuiDataType_Double, &threshold, &thresholdMin, &thresholdMax);
+        ImGui::SliderScalar("", ImGuiDataType_Double, &scale, &scaleMin, &scaleMax, "%.10f scale");
+        ImGui::SliderScalar("", ImGuiDataType_Double, &threshold, &thresholdMin, &thresholdMax, "%.10f threshold");
 
         ImGui::End();
 
