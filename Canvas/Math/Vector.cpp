@@ -266,34 +266,34 @@ namespace cc
 	}
 
 
-	Float LengthSquared(const Vector2& u, const Vector2& v)
+	Float LengthSquared(const Vector2& u)
 	{
-		return Dot(u, v);
+		return Dot(u, u);
 	}
 
-	Float LengthSquared(const Vector3& u, const Vector3& v)
+	Float LengthSquared(const Vector3& u)
 	{
-		return Dot(u, v);
+		return Dot(u, u);
 	}
 
-	Float LengthSquared(const Vector4& u, const Vector4& v)
+	Float LengthSquared(const Vector4& u)
 	{
-		return Dot(u, v);
+		return Dot(u, u);
 	}
 
 
-	Float Length(const Vector2& u, const Vector2& v)
+	Float Length(const Vector2& u)
 	{
-		return std::sqrt(LengthSquared(u, v));
+		return std::sqrt(LengthSquared(u));
 	}
 
-	Float Length(const Vector3& u, const Vector3& v)
+	Float Length(const Vector3& u)
 	{
-		return std::sqrt(LengthSquared(u, v));
+		return std::sqrt(LengthSquared(u));
 	}
 
-	Float Length(const Vector4& u, const Vector4& v)
+	Float Length(const Vector4& u)
 	{
-		return std::sqrt(LengthSquared(u, v));
+		return std::sqrt(LengthSquared(u));
 	}
 }
