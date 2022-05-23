@@ -1,24 +1,67 @@
-
+#include "ImguiWindow.h"
 #include "RGB.h"
 #include "Image.h"
 #include "Canvas.h"
 #include "Shapes/Circle.h"
 #include "Drawing.h"
-
-#include "ImguiWindow.h"
+#include "Texture.h"
+#include "Shader.h"
+#include "Vector.h"
 
 #include <memory>
 #include <cmath>
 
 using namespace cc;
 
-Float clamp(Float value, Float min, Float max)
-{
-    if (value < min) return min;
-    if (value > max) return max;
+static const std::string vertexShader = 
+R"(
+    #version 330
 
-    return value;
-}
+    in vec4 inPos;
+    in vec2 inTex;
+
+    out vec4 outPos;
+    out vec2 outTex;
+
+    void main()
+    {
+        outPos = inPos;
+        outTex = inTex;
+    }
+)";
+
+static const std::string fragmentShader = 
+R"(
+    #version 330
+
+    in vec4 inPos;
+    in vec2 inTex;
+
+    out vec4 colour;
+
+    uniform sampler2D u_texture;
+
+    void main()
+    {
+        colour = texture(u_texture, inTex);
+
+        if (colour.a < 0.5) discard;
+    }
+)";
+
+static const std::vector<Vector4> points =
+{
+    {0.0f, 0.0f, -1.0f, 1.0f},
+    {1.0f, 0.0f, -1.0f, 1.0f},
+    {1.0f, 1.0f, -1.0f, 1.0f},
+    {0.0f, 1.0f, -1.0f, 1.0f},
+};
+
+static const std::vector<int32_t> indices =
+{
+    0, 1, 2,
+    0, 2, 3,
+};
 
 class ConicSection : public Shape
 {
@@ -98,9 +141,6 @@ int main()
     Float threshold = 1, thresholdMin = 0, thresholdMax = 100;
     std::shared_ptr<ConicSection> conicSection = std::make_shared<ConicSection>();
 
-    uint32_t shader;
-    uint32_t texture;
-
     while (!window.IsClosed())
     {
         window.BeginFrame();
@@ -128,7 +168,21 @@ int main()
 
         canvas.Draw(conicSection, {1.0f, 1.0f, 1.0f, 1.0f});
 
-        // Now I just need to put all the data into the GPU and draw it
+        Texture tex(canvas.ImageHandle());
+
+        uint32_t vbo, ibo;
+        glGenBuffers(1, &vbo);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBufferData(GL_ARRAY_BUFFER, points.size() * sizeof(Vector4), points.data(), GL_STATIC_DRAW);
+
+        glGenBuffers(1, &ibo);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(int32_t), indices.data(), GL_STATIC_DRAW);
+
+        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
+
+        glDeleteBuffers(1, &vbo);
+        glDeleteBuffers(1, &ibo);
 
         window.EndFrame();
     }

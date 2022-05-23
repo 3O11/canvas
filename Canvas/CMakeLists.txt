@@ -31,6 +31,10 @@ add_library (canvas STATIC
 	"Window/Window.h"
 	"Window/Window.cpp"
 	"Window/ImguiWindow.h"
+	"OpenGL/Shader.h"
+	"OpenGL/Shader.cpp"
+	"OpenGL/Texture.h"
+	"OpenGL/Texture.cpp"
 )
 
 target_include_directories (canvas PUBLIC
@@ -41,6 +45,7 @@ target_include_directories (canvas PUBLIC
 	"Animation"
 	"Drawing"
 	"Window"
+	"OpenGL"
 )
 
 add_subdirectory(".third-party")
