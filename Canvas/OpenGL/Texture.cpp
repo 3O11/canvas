@@ -18,6 +18,11 @@ namespace cc
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
+    Texture::~Texture()
+    {
+        glDeleteTextures(1, &m_textureId);
+    }
+
     void Texture::Use(uint32_t slot)
     {
         glActiveTexture(GL_TEXTURE0 + slot);

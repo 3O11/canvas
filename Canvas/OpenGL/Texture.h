@@ -13,6 +13,8 @@ namespace cc
         Texture(const Texture& texture) = delete;
         Texture& operator=(const Texture& texture) = delete;
 
+        ~Texture();
+
         void Use(uint32_t slot = 0);
     private:
         uint32_t m_textureId;
