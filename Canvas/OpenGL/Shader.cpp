@@ -69,6 +69,7 @@ namespace cc
             glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
             std::vector<char> message;
             message.resize(length);
+            glGetShaderInfoLog(id, length, &length, &message[0]);
             printf("%s", message.data());
             glDeleteShader(id);
             return 0;

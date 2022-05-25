@@ -39,3 +39,4 @@
 **/.vs
 **/.vscode
 .DS_Store
+CMakeSettings.json
