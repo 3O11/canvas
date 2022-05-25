@@ -21,6 +21,8 @@ add_library (canvas STATIC
 	"Math/Transforms.cpp"
 	"Math/Quaternion.h"
 	"Math/Quaternion.cpp"
+	"Math/Utils.h"
+	"Math/Utils.cpp"
 	"Animation/BasicAnimator.h"
 	"Animation/BasicAnimator.cpp"
 	"Drawing/Shape.h"
@@ -35,6 +37,8 @@ add_library (canvas STATIC
 	"OpenGL/Shader.cpp"
 	"OpenGL/Texture.h"
 	"OpenGL/Texture.cpp"
+	"OpenGL/Buffers.h"
+	"OpenGL/Buffers.cpp"
 )
 
 target_include_directories (canvas PUBLIC

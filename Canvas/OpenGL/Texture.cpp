@@ -6,8 +6,8 @@ namespace cc
 {
     Texture::Texture(const Image& image)
     {
-        glGenTextures(1, &m_textureId);
-        glBindTexture(GL_TEXTURE_2D, m_textureId);
+        glGenTextures(1, &m_textureID);
+        glBindTexture(GL_TEXTURE_2D, m_textureID);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -20,12 +20,25 @@ namespace cc
 
     Texture::~Texture()
     {
-        glDeleteTextures(1, &m_textureId);
+        glDeleteTextures(1, &m_textureID);
     }
 
-    void Texture::Use(uint32_t slot)
+    Texture::Texture(Texture&& tx)
+    {
+        m_textureID = tx.m_textureID;
+        tx.m_textureID = 0;
+    }
+
+    Texture& Texture::operator=(Texture&& tx)
+    {
+        m_textureID = tx.m_textureID;
+        tx.m_textureID = 0;
+        return *this;
+    }
+
+    void Texture::Bind(uint32_t slot)
     {
         glActiveTexture(GL_TEXTURE0 + slot);
-	    glBindTexture(GL_TEXTURE_2D, m_textureId);
+	    glBindTexture(GL_TEXTURE_2D, m_textureID);
     }
 }

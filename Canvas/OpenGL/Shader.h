@@ -12,20 +12,22 @@ namespace cc
     {
     public:
         Shader(const std::string& vertexShader, const std::string& fragmentShader);
+        ~Shader();
 
         Shader(const Shader& shader) = delete;
         Shader& operator=(const Shader& shader) = delete;
-        
-        ~Shader();
 
-        void Use() const;
+        Shader(Shader&& sh);
+        Shader& operator=(Shader&& sh);
+
+        void Bind() const;
 
         void SetUniform1i(const std::string& name, int32_t value);
     private:
         uint32_t compileShader(uint32_t shaderType, const std::string& source);
         int32_t getLocation(const std::string& name);
 
-        uint32_t m_shaderId;
+        uint32_t m_shaderID;
         std::unordered_map<std::string, int32_t> m_locationCache;
     };
 }

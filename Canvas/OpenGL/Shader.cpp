@@ -6,16 +6,16 @@
 namespace cc
 {
     Shader::Shader(const std::string& vertexShader, const std::string& fragmentShader)
-        : m_shaderId(0)
+        : m_shaderID(0)
     {
-        m_shaderId = glCreateProgram();
+        m_shaderID = glCreateProgram();
         uint32_t vs = compileShader(GL_VERTEX_SHADER, vertexShader);
         uint32_t fs = compileShader(GL_FRAGMENT_SHADER, fragmentShader);
 
-        glAttachShader(m_shaderId, vs);
-        glAttachShader(m_shaderId, fs);
-        glLinkProgram(m_shaderId);
-        glValidateProgram(m_shaderId);
+        glAttachShader(m_shaderID, vs);
+        glAttachShader(m_shaderID, fs);
+        glLinkProgram(m_shaderID);
+        glValidateProgram(m_shaderID);
 
         glDeleteShader(vs);
         glDeleteShader(fs);
@@ -23,15 +23,30 @@ namespace cc
 
     Shader::~Shader()
     {
-        if (m_shaderId != 0)
+        if (m_shaderID != 0)
         {
-            glDeleteProgram(m_shaderId);
+            glDeleteProgram(m_shaderID);
         }
     }
 
-    void Shader::Use() const
+    Shader::Shader(Shader&& sh)
     {
-        glUseProgram(m_shaderId);
+        m_shaderID = sh.m_shaderID;
+        m_locationCache = std::move(sh.m_locationCache);
+        sh.m_shaderID = 0;
+    }
+
+    Shader& Shader::operator=(Shader&& sh)
+    {
+        m_shaderID = sh.m_shaderID;
+        m_locationCache = std::move(sh.m_locationCache);
+        sh.m_shaderID = 0;
+        return *this;
+    }
+
+    void Shader::Bind() const
+    {
+        glUseProgram(m_shaderID);
     }
 
     void Shader::SetUniform1i(const std::string& name, int32_t value)
@@ -66,7 +81,7 @@ namespace cc
     {
         if (!m_locationCache.contains(name))
         {
-            int32_t location = glGetUniformLocation(m_shaderId, name.c_str());
+            int32_t location = glGetUniformLocation(m_shaderID, name.c_str());
             m_locationCache[name] = location;
             return location;
         }

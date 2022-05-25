@@ -9,15 +9,17 @@ namespace cc
     {
     public:
         Texture(const Image& image);
+        ~Texture();
 
         Texture(const Texture& texture) = delete;
         Texture& operator=(const Texture& texture) = delete;
 
-        ~Texture();
+        Texture(Texture&& tx);
+        Texture& operator=(Texture&& tx);
 
-        void Use(uint32_t slot = 0);
+        void Bind(uint32_t slot = 0);
     private:
-        uint32_t m_textureId;
+        uint32_t m_textureID;
     };
 }
 
