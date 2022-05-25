@@ -36,6 +36,21 @@ inline constexpr Matrix _cc_mat_mult(const Matrix& m, const Matrix& n)
 	return result;
 }
 
+template<typename Matrix, size_t dim>
+inline constexpr Matrix _cc_mat_transpose(const Matrix& m)
+{
+	Matrix result;
+	for (size_t i = 0; i < dim; ++i)
+	{
+		for(size_t j = 0; j < dim; ++j)
+		{
+			result[j][i] = m[i][j];
+		}
+	}
+
+	return result;
+}
+
 namespace cc
 {
 	Matrix3::Matrix3()
@@ -63,6 +78,17 @@ namespace cc
 	const Vector3& Matrix3::operator[](size_t index) const
 	{
 		return m[index];
+	}
+
+	Matrix3& Matrix3::Transpose()
+	{
+		m = _cc_mat_transpose<std::array<Vector3, 3>, 3>(m);
+		return *this;
+	}
+
+	Matrix3 Matrix3::Transposed() const
+	{
+		return Matrix3(*this).Transpose();
 	}
 
 
@@ -94,15 +120,26 @@ namespace cc
 		return m[index];
 	}
 
+	Matrix4& Matrix4::Transpose()
+	{
+		m = _cc_mat_transpose<std::array<Vector4, 4>, 4>(m);
+		return *this;
+	}
+
+	Matrix4 Matrix4::Transposed() const
+	{
+		return Matrix4(*this).Transpose();
+	}
+
 
 	Matrix3 operator+(const Matrix3& m, const Matrix3& n)
 	{
-		return { m[0] + n[0], m[1] + n[1], m[2] + n[2] };
+		return Matrix3( m[0] + n[0], m[1] + n[1], m[2] + n[2] );
 	}
 
 	Matrix3 operator-(const Matrix3& m, const Matrix3& n)
 	{
-		return { m[0] - n[0], m[1] - n[1], m[2] - n[2] };
+		return Matrix3( m[0] - n[0], m[1] - n[1], m[2] - n[2] );
 	}
 
 	Matrix3 operator*(const Matrix3& m, const Matrix3& n)
@@ -132,12 +169,12 @@ namespace cc
 
 	Matrix4 operator+(const Matrix4& m, const Matrix4& n)
 	{
-		return { m[0] + n[0], m[1] + n[1], m[2] + n[2], m[3] + n[3] };
+		return Matrix4( m[0] + n[0], m[1] + n[1], m[2] + n[2], m[3] + n[3] );
 	}
 
 	Matrix4 operator-(const Matrix4& m, const Matrix4& n)
 	{
-		return { m[0] - n[0], m[1] - n[1], m[2] - n[2], m[3] - n[3] };
+		return Matrix4( m[0] - n[0], m[1] - n[1], m[2] - n[2], m[3] - n[3] );
 	}
 
 	Matrix4 operator*(const Matrix4& m, const Matrix4& n)
@@ -168,23 +205,23 @@ namespace cc
 	Vector2 operator*(const Matrix3& m, const Vector2& u)
 	{
 		Vector3 temp(u.x, u.y, 1.0);
-		return { Dot(m[0], temp), Dot(m[1], temp) };
+		return { Vector3::Dot(m[0], temp), Vector3::Dot(m[1], temp) };
 	}
 
 	Vector3 operator*(const Matrix3& m, const Vector3& u)
 	{
-		return { Dot(m[0], u), Dot(m[1], u), Dot(m[2], u) };
+		return { Vector3::Dot(m[0], u), Vector3::Dot(m[1], u), Vector3::Dot(m[2], u) };
 	}
 
 	Vector3 operator*(const Matrix4& m, const Vector3& u)
 	{
 		Vector4 temp(u.x, u.y, u.z, 1.0);
-		return { Dot(m[0], temp), Dot(m[1], temp), Dot(m[2], temp) };
+		return { Vector4::Dot(m[0], temp), Vector4::Dot(m[1], temp), Vector4::Dot(m[2], temp) };
 	}
 
 	Vector4 operator*(const Matrix4& m, const Vector4& u)
 	{
-		return { Dot(m[0], u), Dot(m[1], u), Dot(m[2], u), Dot(m[3], u) };
+		return { Vector4::Dot(m[0], u), Vector4::Dot(m[1], u), Vector4::Dot(m[2], u), Vector4::Dot(m[3], u) };
 	}
 
 

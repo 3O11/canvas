@@ -14,6 +14,13 @@ namespace cc
 		Float& operator[] (size_t index);
 		const Float& operator[] (size_t index) const;
 
+		static Float Dot(const Vector2& u, const Vector2& v);
+		Float LengthSquared();
+		Float Length();
+
+		Vector2& Normalize();
+		Vector2 Normalized() const;
+
 		Float x;
 		Float y;
 	};
@@ -28,6 +35,15 @@ namespace cc
 		Float& operator[] (size_t index);
 		const Float& operator[] (size_t index) const;
 
+		static Float Dot(const Vector3& u, const Vector3& v);
+		Float LengthSquared();
+		Float Length();
+
+		Vector3& Normalize();
+		Vector3 Normalized() const;
+
+		static Vector3 Cross(const Vector3& u, const Vector3& v);
+
 		Float x;
 		Float y;
 		Float z;
@@ -40,9 +56,17 @@ namespace cc
 		Vector4(Float x, Float y, Float z);
 		Vector4(Float x, Float y, Float z, Float w);
 		Vector4(const Vector3& vec);
+		Vector4(const Vector3& vec, Float w);
 
 		Float& operator[] (size_t index);
 		const Float& operator[] (size_t index) const;
+
+		static Float Dot(const Vector4& u, const Vector4& v);
+		Float LengthSquared();
+		Float Length();
+
+		Vector4& Normalize();
+		Vector4 Normalized() const;
 
 		Float x;
 		Float y;
@@ -82,18 +106,6 @@ namespace cc
 	Vector4& operator-= (Vector4& u, const Vector4& v);
 	Vector4& operator*= (Vector4& u, const Vector4& v);
 	Vector4& operator/= (Vector4& u, const Vector4& v);
-
-	Float Dot(const Vector2& u, const Vector2& v);
-	Float Dot(const Vector3& u, const Vector3& v);
-	Float Dot(const Vector4& u, const Vector4& v);
-
-	Float LengthSquared(const Vector2& u);
-	Float LengthSquared(const Vector3& u);
-	Float LengthSquared(const Vector4& u);
-
-	Float Length(const Vector2& u);
-	Float Length(const Vector3& u);
-	Float Length(const Vector4& u);
 }
 
 #endif //_CC_VECTOR_H

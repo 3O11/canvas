@@ -46,39 +46,39 @@ namespace cc
         
         Matrix4 RotateX (const Matrix4& mat, Float angle)
         {
-            Matrix4 rotation =
-            {
+            Matrix4 rotation = Matrix4
+            (
                 { 1,               0,                0, 0 },
                 { 0, std::cos(angle), -std::sin(angle), 0 },
                 { 0, std::sin(angle),  std::cos(angle), 0 },
                 { 0,               0,                0, 1 }
-            };
+            );
 
             return rotation * mat;
         }
 
         Matrix4 RotateY (const Matrix4& mat, Float angle)
         {
-            Matrix4 rotation =
-            {
+            Matrix4 rotation = Matrix4
+            (
                 {  std::cos(angle), 0,  std::sin(angle), 0 },
                 {               0, 1,                0, 0 },
                 { -std::sin(angle), 0,  std::cos(angle), 0 },
                 {               0, 0,                0, 1 }
-            };
+            );
 
             return rotation * mat;
         }
 
         Matrix4 RotateZ (const Matrix4& mat, Float angle)
         {
-            Matrix4 rotation =
-            {
+            Matrix4 rotation = Matrix4
+            (
                 { std::cos(angle), -std::sin(angle), 0, 0 },
                 { std::sin(angle),  std::cos(angle), 0, 0 },
                 {               0,                0, 1, 0 },
                 {               0,                0, 0, 1 }
-            };
+            );
 
             return rotation * mat;
         }

@@ -22,7 +22,7 @@ namespace cc
 
     Float Circle::Contribution(Float x, Float y)
     {
-        auto dist = Length(Vector2(m_xCenter - x, m_yCenter - y));
+        auto dist = Vector2(m_xCenter - x, m_yCenter - y).Length();
 
 
         return m_fill ? dist - m_radius < m_thickness : std::abs(dist - m_radius) < m_thickness;

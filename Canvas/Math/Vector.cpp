@@ -28,6 +28,35 @@ namespace cc
 		return y;
 	}
 
+	Float Vector2::Dot(const Vector2& u, const Vector2& v)
+	{
+		return u.x * v.x + u.y * v.y;
+	}
+
+	Float Vector2::LengthSquared()
+	{
+		return Dot(*this, *this);
+	}
+
+	Float Vector2::Length()
+	{
+		return std::sqrt(LengthSquared());
+	}
+
+	Vector2& Vector2::Normalize()
+	{
+		Float length = Length();
+		x /= length;
+		y /= length;
+
+		return *this;
+	}
+
+	Vector2 Vector2::Normalized() const
+	{
+		return Vector2(*this).Normalize();
+	}
+
 
 	Vector3::Vector3()
 		: x(0.0), y(0.0), z(0.0)
@@ -59,6 +88,47 @@ namespace cc
 		return z;
 	}
 
+	Float Vector3::Dot(const Vector3& u, const Vector3& v)
+	{
+		return u.x * v.x + u.y * v.y + u.z * v.z;
+	}
+
+	Float Vector3::LengthSquared()
+	{
+		return Dot(*this, *this);
+	}
+
+	Float Vector3::Length()
+	{
+		return std::sqrt(LengthSquared());
+	}
+
+	Vector3& Vector3::Normalize()
+	{
+		Float length = Length();
+		x /= length;
+		y /= length;
+		z /= length;
+
+		return *this;
+	}
+
+	Vector3 Vector3::Normalized() const
+	{
+		return Vector3(*this).Normalize();
+	}
+
+	Vector3 Vector3::Cross(const Vector3& u, const Vector3& v)
+	{
+		Vector3 c;
+
+		c.x = u.y * v.z - u.z * v.y;
+		c.y = u.z * v.x - u.x * v.z;
+		c.z = u.x * v.y - u.y * v.x;
+
+		return c;
+	}
+
 
 	Vector4::Vector4()
 		: x(0.0), y(0.0), z(0.0), w(0.0)
@@ -80,6 +150,10 @@ namespace cc
 		: x(vec.x), y(vec.y), z(vec.z), w(1.0)
 	{}
 
+	Vector4::Vector4(const Vector3& vec, Float w)
+		: x(vec.x), y(vec.y), z(vec.z), w(w)
+	{}
+
 	Float& Vector4::operator[](size_t index)
 	{
 		if (index == 0) return x;
@@ -94,6 +168,37 @@ namespace cc
 		if (index == 1) return y;
 		if (index == 2) return z;
 		return w;
+	}
+
+	Float Vector4::Dot(const Vector4& u, const Vector4& v)
+	{
+		return u.x * v.x + u.y * v.y + u.z * v.z + u.w * v.w;
+	}
+
+	Float Vector4::LengthSquared()
+	{
+		return Dot(*this, *this);
+	}
+
+	Float Vector4::Length()
+	{
+		return std::sqrt(LengthSquared());
+	}
+
+	Vector4& Vector4::Normalize()
+	{
+		Float length = Length();
+		x /= length;
+		y /= length;
+		z /= length;
+		w /= length;
+
+		return *this;
+	}
+
+	Vector4 Vector4::Normalized() const
+	{
+		return Vector4(*this).Normalize();
 	}
 
 
@@ -247,53 +352,5 @@ namespace cc
 	{
 		u = u / v;
 		return u;
-	}
-
-
-	Float Dot(const Vector2& u, const Vector2& v)
-	{
-		return u.x * v.x + u.y * v.y;
-	}
-
-	Float Dot(const Vector3& u, const Vector3& v)
-	{
-		return u.x * v.x + u.y * v.y + u.z * v.z;
-	}
-
-	Float Dot(const Vector4& u, const Vector4& v)
-	{
-		return u.x * v.x + u.y * v.y + u.z * v.z + u.w * v.w;
-	}
-
-
-	Float LengthSquared(const Vector2& u)
-	{
-		return Dot(u, u);
-	}
-
-	Float LengthSquared(const Vector3& u)
-	{
-		return Dot(u, u);
-	}
-
-	Float LengthSquared(const Vector4& u)
-	{
-		return Dot(u, u);
-	}
-
-
-	Float Length(const Vector2& u)
-	{
-		return std::sqrt(LengthSquared(u));
-	}
-
-	Float Length(const Vector3& u)
-	{
-		return std::sqrt(LengthSquared(u));
-	}
-
-	Float Length(const Vector4& u)
-	{
-		return std::sqrt(LengthSquared(u));
 	}
 }
