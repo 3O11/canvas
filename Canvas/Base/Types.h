@@ -20,6 +20,8 @@ namespace cc
 
 	using f32 = float;
 	using f64 = double;
+
+	static constexpr Float FloatEps = Float(0.0001);
 }
 
 #endif //_CC_TYPES_H
