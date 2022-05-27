@@ -1,3 +1,5 @@
+// The include situation is already very messy, I'll need to do something
+// about it soon.
 #include "ImguiWindow.h"
 #include "Window.h"
 #include "RGB.h"
@@ -9,6 +11,7 @@
 #include "Shader.h"
 #include "Vector.h"
 #include "Buffers.h"
+#include "Utils.h"
 
 #include <memory>
 #include <cmath>
@@ -17,10 +20,10 @@ using namespace cc;
 
 static const std::string vertexShader = 
 R"(
-    #version 150
+    #version 330
 
-    in vec4 inPos; 
-    in vec2 inTex;   
+    in vec4 inPos;
+    in vec2 inTex;
 
     out vec4 pos;
     out vec2 tex;
@@ -35,7 +38,7 @@ R"(
 
 static const std::string fragmentShader = 
 R"(
-    #version 150
+    #version 330
 
     in vec4 pos;
     in vec2 tex;
@@ -75,8 +78,8 @@ class ConicSection : public Shape
 public:
     Float Contribution(Float x, Float y) override
     {
-        x *= m_scale;
-        y *= m_scale;
+        x /= m_scale;
+        y /= m_scale;
 
         return std::sqrt(std::abs((x * x * m_x2) + (y * y * m_y2) + (x * y * m_xy) + (x * m_x) + (y * m_y) + m_c)) <= m_threshold;
     }
@@ -101,9 +104,80 @@ public:
         m_threshold = threshold;
     }
 
+    Float Eccentricity()
+    {
+        Float sign = Sign(m_c * (m_xy * m_xy - 4 * m_x2 * m_y2) + (m_x2 * m_y * m_y - m_xy * m_x * m_y + m_y2 * m_x * m_x));
+        Float comp = std::sqrt((m_x2 - m_y2) * (m_x2 - m_y2) + m_xy * m_xy);
+        return std::sqrt((2 * comp) / (sign * (m_x2 + m_y2) + comp));
+    }
+
     std::string DetermineType()
     {
+        Float disc = (m_xy * m_xy) - (4 * m_x2 * m_y2);
 
+        if (std::abs(m_x2) <= FloatEps && std::abs(m_y2) <= FloatEps && std::abs(m_xy) <= FloatEps)
+        {
+            return "Linear (Not a Conic)";
+        }
+
+        if (std::abs(disc) <= FloatEps)
+        {
+            return "Parabola";
+        }
+
+        if (disc > 0)
+        {
+            if (std::abs(m_x2 + m_y2) <= FloatEps)
+            {
+                return "Rectangular hyperbola";
+            }
+
+            return "Hyperbola";
+        }
+        else
+        {
+            if (std::abs(m_x2 - m_y2) <= FloatEps && std::abs(m_xy) <= FloatEps)
+            {
+                if (std::abs(m_x) <= FloatEps && std::abs(m_y) <= FloatEps)
+                {
+                    return "Point";
+                }
+
+                return "Circle";
+            }
+            else
+            {
+                return "Ellipse";
+            }
+        }
+    }
+
+    std::string Center()
+    {
+        return "WIP";
+
+        Float ecc = Eccentricity();
+        if (ecc <= FloatEps)
+        { // Circle case
+            
+        }
+        else if (std::abs(1.0f - ecc) <= FloatEps)
+        { // Parabola case
+
+        }
+        else if (ecc > 0.0f && ecc < 1.0f)
+        { // Ellipse case
+
+        }
+        else
+        { // Hyperbola case
+
+        }
+    }
+
+    std::string Radii()
+    {
+        return "WIP";
     }
 private:
     Float m_x2 = 1;
@@ -143,17 +217,20 @@ int main()
 
 #else
 
-    ImguiWindow window("Conic sections", 1024, 1024);
+    ImguiWindow window("Conic sections", 640, 480);
     window.SetClearColour({ 1.0f, 0.0f, 0.0f, 1.0f });
 
     Float x2 = 52, xy = -72, y2 = 73, x = -280, y = 290, c = 325;
     Float min = -1000;
     Float max = 1000;
-    Float scale = 1 / 128.0f, scaleMin = 0, scaleMax = 0.5f;
-    Float threshold = 1, thresholdMin = 0, thresholdMax = 10;
+    Float scale = 128.0f;
+    Float threshold = 1;
     std::shared_ptr<ConicSection> conicSection = std::make_shared<ConicSection>();
 
     Shader shader(vertexShader, fragmentShader);
+    Texture tex(Image(640, 480, {1.0f, 1.0f, 1.0f, 1.0f}));
+
+    bool Updated = true;
 
     VertexArray vao;
     VertexBuffer vbo(&points[0], 4, sizeof(Vertex));
@@ -169,29 +246,49 @@ int main()
 
         ImGui::Begin("Options");
 
-        ImGui::SliderScalar("x^2", ImGuiDataType_Float, &x2, &min, &max, "%.1f x^2");
-        ImGui::SliderScalar("xy", ImGuiDataType_Float, &xy, &min, &max, "%.10f xy");
-        ImGui::SliderScalar("y^2", ImGuiDataType_Float, &y2, &min, &max, "%.10f y^2");
-        ImGui::SliderScalar("x", ImGuiDataType_Float, &x, &min, &max, "%.10f x");
-        ImGui::SliderScalar("y", ImGuiDataType_Float, &y, &min, &max, "%.10f y");
-        ImGui::SliderScalar("c", ImGuiDataType_Float, &c, &min, &max, "%.10f");
+        ImGui::Text("Current conic section: %s, Eccentricity: %.4f", conicSection->DetermineType().c_str(), conicSection->Eccentricity());
+        
+        ImGui::Text("Center: %s, Radii: %s", conicSection->Center(), conicSection->Radii());
 
-        ImGui::SliderScalar("scale", ImGuiDataType_Float, &scale, &scaleMin, &scaleMax, "%.10f scale");
-        ImGui::SliderScalar("threshold (line thickness/intersecting \"plane\" thickness)", ImGuiDataType_Float, &threshold, &thresholdMin, &thresholdMax, "%.10f threshold");
+        ImGui::Text(" ");
+
+        ImGui::Text("Parameters: ");
+        Updated |= ImGui::InputFloat("x^2", &x2, 0.1f, 1.0f, "%.4f");
+        Updated |= ImGui::InputFloat("y^2", &y2, 0.1f, 1.0f, "%.4f");
+        Updated |= ImGui::InputFloat("xy",  &xy, 0.1f, 1.0f, "%.4f");
+        Updated |= ImGui::InputFloat("x",   &x,  0.1f, 1.0f, "%.4f");
+        Updated |= ImGui::InputFloat("y",   &y,  0.1f, 1.0f, "%.4f");
+        Updated |= ImGui::InputFloat("c",   &c,  0.1f, 1.0f, "%.4f");
+        Updated |= ImGui::InputFloat("scale", &scale, 0.1f, 1.0f, "%.4f");
+        Updated |= ImGui::InputFloat("threshold", &threshold, 0.1f, 1.0f, "%.4f");
+
+        ImGui::Text(" ");
+
+        ImGui::Text("Default increment is 0.1, hold 'Ctrl' to increment by 1.");
+        ImGui::Text("The origin [0, 0] is in the center of the screen.");
+        ImGui::Text("Performance: %.2f ms frametime, %.2f FPS", ImGui::GetIO().DeltaTime * 1000.0f, ImGui::GetIO().Framerate);
 
         ImGui::End();
 
-        Canvas canvas(window.GetWidth(), window.GetHeight(), { 1.0f, 1.0f, 1.0f, 1.0f });
-        canvas.SetOffset(window.GetWidth() / 2, window.GetHeight() / 2);
+        if (Updated)
+        {
+            if (scale < FloatEps) scale = FloatEps;
 
-        conicSection->SetParameters(x2, xy, y2, x, y, c);
-        conicSection->SetScale(scale);
-        conicSection->SetThreshold(threshold);
+            Canvas canvas(window.GetWidth(), window.GetHeight(), { 1.0f, 1.0f, 1.0f, 1.0f });
+            canvas.SetOffset(window.GetWidth() / 2, window.GetHeight() / 2);
 
-        canvas.Clear({ 1.0f, 1.0f, 1.0f });
-        canvas.Draw(conicSection, { 1.0f, 0.0f, 0.0f, 1.0f });
+            conicSection->SetParameters(x2, xy, y2, x, y, c);
+            conicSection->SetScale(scale);
+            conicSection->SetThreshold(threshold);
 
-        Texture tex(canvas.ImageHandle());
+            canvas.Clear({ 1.0f, 1.0f, 1.0f });
+            canvas.Draw(conicSection, { 1.0f, 0.0f, 0.0f, 1.0f });
+
+            tex = Texture(canvas.ImageHandle());
+
+            Updated = false;
+        }
+
         shader.Bind();
         tex.Bind();
         shader.SetUniform1i("u_texture", 0);

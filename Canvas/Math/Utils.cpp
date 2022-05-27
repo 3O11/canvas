@@ -9,4 +9,9 @@ namespace cc
 
         return value;
     }
+
+    Float Sign(Float value)
+    {
+        return Float((value > 0) - (value < 0));
+    }
 }
