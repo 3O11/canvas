@@ -36,14 +36,14 @@ namespace cc
         }
     }
 
-    VertexBuffer::VertexBuffer(VertexBuffer&& vb)
+    VertexBuffer::VertexBuffer(VertexBuffer&& vb) noexcept
     {
         m_vboID = vb.m_vboID;
         m_layout = std::move(vb.m_layout);
         vb.m_vboID = 0;
     }
 
-    VertexBuffer& VertexBuffer::operator=(VertexBuffer&& vb)
+    VertexBuffer& VertexBuffer::operator=(VertexBuffer&& vb) noexcept
     {
         m_vboID = vb.m_vboID;
         m_layout = std::move(vb.m_layout);
@@ -83,14 +83,14 @@ namespace cc
         }
     }
 
-    ElementBuffer::ElementBuffer(ElementBuffer&& eb)
+    ElementBuffer::ElementBuffer(ElementBuffer&& eb) noexcept
     {
         m_eboID = eb.m_eboID;
         m_indexCount = eb.m_indexCount;
         m_eboID = 0;
     }
 
-    ElementBuffer& ElementBuffer::operator=(ElementBuffer&& eb)
+    ElementBuffer& ElementBuffer::operator=(ElementBuffer&& eb) noexcept
     {
         m_eboID = eb.m_eboID;
         m_indexCount = eb.m_indexCount;
@@ -122,13 +122,13 @@ namespace cc
         }
     }
 
-    VertexArray::VertexArray(VertexArray&& va)
+    VertexArray::VertexArray(VertexArray&& va) noexcept
     {
         m_vaoID = va.m_vaoID;
         va.m_vaoID = 0;
     }
 
-    VertexArray& VertexArray::operator=(VertexArray&& va)
+    VertexArray& VertexArray::operator=(VertexArray&& va) noexcept
     {
         m_vaoID = va.m_vaoID;
         va.m_vaoID = 0;
@@ -144,11 +144,12 @@ namespace cc
     {
         Bind();
         vb.Bind();
-        uint32_t i = 0, offset = 0;
+        uint32_t i = 0;
+        size_t offset = 0;
         for ( auto&& [ Type, Count, Size, Normalize ] : vb.GetLayout().Elements )
         {
             glEnableVertexAttribArray(i);
-            glVertexAttribPointer(i, Count, Type, Normalize, vb.GetLayout().Stride, reinterpret_cast<const void *>(offset));
+            glVertexAttribPointer(i, Count, Type, static_cast<GLboolean>(Normalize), vb.GetLayout().Stride, reinterpret_cast<const void *>(offset));
 
             ++i;
             offset += Count * Size;

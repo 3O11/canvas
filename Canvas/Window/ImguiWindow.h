@@ -35,8 +35,8 @@ namespace cc
 
             m_glfwWindow = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
@@ -58,6 +58,7 @@ namespace cc
         {
             glfwPollEvents();
             m_closed = glfwWindowShouldClose(m_glfwWindow);
+            glfwGetWindowSize(m_glfwWindow, &m_width, &m_height);
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             ImGui_ImplOpenGL3_NewFrame();

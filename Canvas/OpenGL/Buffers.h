@@ -32,8 +32,8 @@ namespace cc
         VertexBuffer(const VertexBuffer&) = delete;
         VertexBuffer& operator=(const VertexBuffer&) = delete;
 
-        VertexBuffer(VertexBuffer&& vb);
-        VertexBuffer& operator=(VertexBuffer&& vb);
+        VertexBuffer(VertexBuffer&& vb) noexcept;
+        VertexBuffer& operator=(VertexBuffer&& vb) noexcept;
 
         void Bind() const;
         Layout& GetLayout();
@@ -52,8 +52,8 @@ namespace cc
         ElementBuffer(const ElementBuffer&) = delete;
         ElementBuffer& operator=(const ElementBuffer&) = delete;
 
-        ElementBuffer(ElementBuffer&& eb);
-        ElementBuffer& operator=(ElementBuffer&& eb);
+        ElementBuffer(ElementBuffer&& eb) noexcept;
+        ElementBuffer& operator=(ElementBuffer&& eb) noexcept;
 
         void Bind() const;
         uint32_t GetCount() const;
@@ -71,8 +71,8 @@ namespace cc
         VertexArray(const VertexArray&) = delete;
         VertexArray& operator=(const VertexArray&) = delete;
 
-        VertexArray(VertexArray&& va);
-        VertexArray& operator=(VertexArray&& va);
+        VertexArray(VertexArray&& va) noexcept;
+        VertexArray& operator=(VertexArray&& va) noexcept;
 
         void Bind() const;
         void AddBuffer(const VertexBuffer& vb);

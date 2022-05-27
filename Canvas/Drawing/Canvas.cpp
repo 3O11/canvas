@@ -27,7 +27,7 @@ namespace cc
             for (int32_t x = 0; x < m_internalImage.Width(); x++)
             {
                 RGBA contribution = colour;
-                contribution.a *= shape->Contribution(x - m_xOffset, y - m_yOffset);
+                contribution.a *= shape->Contribution(Float(x - m_xOffset), Float(y - m_yOffset));
                 Draw(x + m_xOffset, y + m_yOffset, contribution);
             }
         }

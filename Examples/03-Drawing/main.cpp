@@ -1,4 +1,5 @@
 #include "ImguiWindow.h"
+#include "Window.h"
 #include "RGB.h"
 #include "Image.h"
 #include "Canvas.h"
@@ -7,6 +8,7 @@
 #include "Texture.h"
 #include "Shader.h"
 #include "Vector.h"
+#include "Buffers.h"
 
 #include <memory>
 #include <cmath>
@@ -15,46 +17,51 @@ using namespace cc;
 
 static const std::string vertexShader = 
 R"(
-    #version 330
+    #version 150
 
-    in vec4 inPos;
-    in vec2 inTex;
+    in vec4 inPos; 
+    in vec2 inTex;   
 
-    out vec4 outPos;
-    out vec2 outTex;
+    out vec4 pos;
+    out vec2 tex;
 
     void main()
     {
-        outPos = inPos;
-        outTex = inTex;
+        pos = inPos;
+        tex = inTex;
+        gl_Position = inPos;
     }
 )";
 
 static const std::string fragmentShader = 
 R"(
-    #version 330
+    #version 150
 
-    in vec4 inPos;
-    in vec2 inTex;
-
-    out vec4 colour;
+    in vec4 pos;
+    in vec2 tex;
 
     uniform sampler2D u_texture;
 
+    out vec4 outColour;
+
     void main()
     {
-        colour = texture(u_texture, inTex);
-
-        if (colour.a < 0.5) discard;
+        outColour = texture2D(u_texture, tex);
     }
 )";
 
-static const std::vector<Vector4> points =
+struct Vertex
 {
-    {0.0f, 0.0f, -1.0f, 1.0f},
-    {1.0f, 0.0f, -1.0f, 1.0f},
-    {1.0f, 1.0f, -1.0f, 1.0f},
-    {0.0f, 1.0f, -1.0f, 1.0f},
+    Vector3 pos;
+    Vector2 tex;
+};
+
+static const std::vector<Vertex> points =
+{
+    {{-1.0f, -1.0f, 0.0f}, { 0.0f, 0.0f }},
+    {{ 1.0f, -1.0f, 0.0f}, { 1.0f, 0.0f }},
+    {{ 1.0f,  1.0f, 0.0f}, { 1.0f, 1.0f }},
+    {{-1.0f,  1.0f, 0.0f}, { 0.0f, 1.0f }},
 };
 
 static const std::vector<int32_t> indices =
@@ -94,6 +101,10 @@ public:
         m_threshold = threshold;
     }
 
+    std::string DetermineType()
+    {
+
+    }
 private:
     Float m_x2 = 1;
     Float m_xy = 1;
@@ -102,11 +113,11 @@ private:
     Float m_y  = 1;
     Float m_c  = 1;
 
-    Float m_scale;
-    Float m_threshold;
+    Float m_scale = Float(1) / Float(128);
+    Float m_threshold = Float(1);
 };
 
-//#define USE_WINDOW
+#define USE_WINDOW
 
 int main()
 {
@@ -132,14 +143,25 @@ int main()
 
 #else
 
-    ImguiWindow window("Conic sections");
+    ImguiWindow window("Conic sections", 1024, 1024);
+    window.SetClearColour({ 1.0f, 0.0f, 0.0f, 1.0f });
 
     Float x2 = 52, xy = -72, y2 = 73, x = -280, y = 290, c = 325;
     Float min = -1000;
-    Float max =  1000;
-    Float scale = 1 / 128.0f, scaleMin = 0, scaleMax = 1;
-    Float threshold = 1, thresholdMin = 0, thresholdMax = 100;
+    Float max = 1000;
+    Float scale = 1 / 128.0f, scaleMin = 0, scaleMax = 0.5f;
+    Float threshold = 1, thresholdMin = 0, thresholdMax = 10;
     std::shared_ptr<ConicSection> conicSection = std::make_shared<ConicSection>();
+
+    Shader shader(vertexShader, fragmentShader);
+
+    VertexArray vao;
+    VertexBuffer vbo(&points[0], 4, sizeof(Vertex));
+    ElementBuffer ebo(&indices[0], 6);
+
+    vbo.GetLayout().AddElement<Float>(3);
+    vbo.GetLayout().AddElement<Float>(2);
+    vao.AddBuffer(vbo);
 
     while (!window.IsClosed())
     {
@@ -147,42 +169,36 @@ int main()
 
         ImGui::Begin("Options");
 
-        ImGui::SliderScalar("", ImGuiDataType_Double, &x2, &min, &max, "%.10f x^2");
-        ImGui::SliderScalar("", ImGuiDataType_Double, &xy, &min, &max, "%.10f xy");
-        ImGui::SliderScalar("", ImGuiDataType_Double, &y2, &min, &max, "%.10f y^2");
-        ImGui::SliderScalar("", ImGuiDataType_Double, &x,  &min, &max, "%.10f x");
-        ImGui::SliderScalar("", ImGuiDataType_Double, &y,  &min, &max, "%.10f y");
-        ImGui::SliderScalar("", ImGuiDataType_Double, &c,  &min, &max, "%.10f c");
+        ImGui::SliderScalar("x^2", ImGuiDataType_Float, &x2, &min, &max, "%.1f x^2");
+        ImGui::SliderScalar("xy", ImGuiDataType_Float, &xy, &min, &max, "%.10f xy");
+        ImGui::SliderScalar("y^2", ImGuiDataType_Float, &y2, &min, &max, "%.10f y^2");
+        ImGui::SliderScalar("x", ImGuiDataType_Float, &x, &min, &max, "%.10f x");
+        ImGui::SliderScalar("y", ImGuiDataType_Float, &y, &min, &max, "%.10f y");
+        ImGui::SliderScalar("c", ImGuiDataType_Float, &c, &min, &max, "%.10f");
 
-        ImGui::SliderScalar("", ImGuiDataType_Double, &scale, &scaleMin, &scaleMax, "%.10f scale");
-        ImGui::SliderScalar("", ImGuiDataType_Double, &threshold, &thresholdMin, &thresholdMax, "%.10f threshold");
+        ImGui::SliderScalar("scale", ImGuiDataType_Float, &scale, &scaleMin, &scaleMax, "%.10f scale");
+        ImGui::SliderScalar("threshold (line thickness/intersecting \"plane\" thickness)", ImGuiDataType_Float, &threshold, &thresholdMin, &thresholdMax, "%.10f threshold");
 
         ImGui::End();
 
-        Canvas canvas(window.GetWidth(), window.GetHeight(), {1.0f, 1.0f, 1.0f, 1.0f});
+        Canvas canvas(window.GetWidth(), window.GetHeight(), { 1.0f, 1.0f, 1.0f, 1.0f });
         canvas.SetOffset(window.GetWidth() / 2, window.GetHeight() / 2);
 
         conicSection->SetParameters(x2, xy, y2, x, y, c);
         conicSection->SetScale(scale);
         conicSection->SetThreshold(threshold);
 
-        canvas.Draw(conicSection, {1.0f, 1.0f, 1.0f, 1.0f});
+        canvas.Clear({ 1.0f, 1.0f, 1.0f });
+        canvas.Draw(conicSection, { 1.0f, 0.0f, 0.0f, 1.0f });
 
         Texture tex(canvas.ImageHandle());
+        shader.Bind();
+        tex.Bind();
+        shader.SetUniform1i("u_texture", 0);
 
-        uint32_t vbo, ibo;
-        glGenBuffers(1, &vbo);
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, points.size() * sizeof(Vector4), points.data(), GL_STATIC_DRAW);
-
-        glGenBuffers(1, &ibo);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(int32_t), indices.data(), GL_STATIC_DRAW);
-
-        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
-
-        glDeleteBuffers(1, &vbo);
-        glDeleteBuffers(1, &ibo);
+        vao.Bind();
+        ebo.Bind();
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         window.EndFrame();
     }
