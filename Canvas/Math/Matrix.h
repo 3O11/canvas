@@ -22,6 +22,11 @@ namespace cc
 		Matrix3& Transpose();
 		Matrix3 Transposed() const;
 
+		Matrix3& Invert();
+		Matrix3 Inverse() const;
+
+		Float Det() const;
+
 	private:
 		std::array<Vector3, 3> m;
 	};
@@ -38,6 +43,11 @@ namespace cc
 
 		Matrix4& Transpose();
 		Matrix4 Transposed() const;
+
+		Matrix4& Invert();
+		Matrix4 Inverse() const;
+
+		Float Det() const;
 
 	private:
 		std::array<Vector4, 4> m;

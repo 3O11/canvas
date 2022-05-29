@@ -1,58 +1,114 @@
 #include "Matrix.h"
 
-
-template<typename T, size_t dim>
-inline constexpr void _cc_fill_mat(std::array<T, dim>& m, cc::Float val)
-{
-	for (size_t i = 0; i < dim; i++)
-	{
-		for (size_t j = 0; j < dim; j++)
-		{
-			m[i][j] = val;
-		}
-	}
-}
-
-template<typename T, size_t dim>
-inline constexpr void _cc_fill_mat_diag(std::array<T, dim>& m, cc::Float val)
-{
-	for (size_t i = 0; i < dim; i++)
-	{
-		m[i][i] = val;
-	}
-}
-
-template<typename Matrix, size_t dim>
-inline constexpr Matrix _cc_mat_mult(const Matrix& m, const Matrix& n)
-{
-	Matrix result;
-	for (size_t i = 0; i < dim; i++)
-	{
-		for (size_t j = 0; j < dim; j++)
-		{
-			result[i][j] = m[i][j] * n[j][i];
-		}
-	}
-	return result;
-}
-
-template<typename Matrix, size_t dim>
-inline constexpr Matrix _cc_mat_transpose(const Matrix& m)
-{
-	Matrix result;
-	for (size_t i = 0; i < dim; ++i)
-	{
-		for(size_t j = 0; j < dim; ++j)
-		{
-			result[j][i] = m[i][j];
-		}
-	}
-
-	return result;
-}
+#include "Utils.h"
 
 namespace cc
 {
+	namespace detail
+	{
+		template<typename Matrix, size_t dim>
+		inline constexpr void _cc_mat_fill(Matrix& m, Float val)
+		{
+			for (size_t i = 0; i < dim; i++)
+			{
+				for (size_t j = 0; j < dim; j++)
+				{
+					m[i][j] = val;
+				}
+			}
+		}
+
+		template<typename Matrix, size_t dim>
+		inline constexpr void _cc_mat_fill_diag(Matrix& m, Float val)
+		{
+			for (size_t i = 0; i < dim; i++)
+			{
+				m[i][i] = val;
+			}
+		}
+
+		template<typename Matrix, size_t dim>
+		inline constexpr Matrix _cc_mat_mult(const Matrix& m, const Matrix& n)
+		{
+			Matrix result;
+			for (size_t i = 0; i < dim; i++)
+			{
+				for (size_t j = 0; j < dim; j++)
+				{
+					result[i][j] = m[i][j] * n[j][i];
+				}
+			}
+			return result;
+		}
+
+		template<typename Matrix, size_t dim>
+		inline constexpr void _cc_mat_tpose(Matrix& m)
+		{
+			for (size_t i = 0; i < dim; ++i)
+			{
+				for (size_t j = i + 1; j < dim; ++j)
+				{
+					std::swap(m[j][i], m[i][j]);
+				}
+			}
+		}
+
+		template<typename Matrix, size_t dim>
+		inline constexpr Matrix _cc_mat_cofactor(const Matrix& m, size_t row, size_t col)
+		{
+			size_t ci = 0, cj = 0;
+			Matrix cofactor;
+			for (size_t i = 0; i < dim; ++i)
+			{
+				if (i == row) continue;
+
+				for (size_t j = 0; j < dim; ++j)
+				{
+					if (j == col) continue;
+
+					cofactor[ci][cj++] = m[i][j];
+					if (cj - 1 == dim) { cj = 0; ci++; }
+				}
+			}
+
+			return cofactor;
+		}
+
+		/*template<typename Matrix, size_t dim>
+		inline constexpr Float _cc_mat_det(const Matrix& m)
+		{
+			if constexpr (dim == 1) return m[0][0];
+
+			Float det(0);
+			Matrix cofactor;
+			int sign = 1;
+			for (size_t i = 0; i < dim; i++)
+			{
+				cofactor = _cc_mat_cofactor<Matrix, dim>(m, 0, i);
+				det += sign * m[0][i] * _cc_mat_det<Matrix, dim - 1>(cofactor);
+
+				sign = -sign;
+			}
+
+			return det;
+		}*/
+
+		template<typename Matrix, size_t dim>
+		inline constexpr void _cc_mat_inv(Matrix& m)
+		{
+			size_t pivotRow = 0;
+			size_t pivotCol = 0;
+
+			for (size_t i = 0; i < dim; i++)
+			{
+				for (size_t j = 0; j < dim; j++)
+				{
+					m[pivotRow][pivotCol] = 0;
+				}
+			}
+		}
+	}
+
 	Matrix3::Matrix3()
 		: m()
 	{}
@@ -60,7 +116,7 @@ namespace cc
 	Matrix3::Matrix3(Float val)
 		: m()
 	{
-		_cc_fill_mat_diag<Vector3, 3>(m, val);
+		detail::_cc_mat_fill_diag<Matrix3, 3>(*this, val);
 	}
 
 	Matrix3::Matrix3(const Vector3& row0, const Vector3& row1, const Vector3& row2)
@@ -82,7 +138,7 @@ namespace cc
 
 	Matrix3& Matrix3::Transpose()
 	{
-		m = _cc_mat_transpose<std::array<Vector3, 3>, 3>(m);
+		detail::_cc_mat_tpose<Matrix3, 3>(*this);
 		return *this;
 	}
 
@@ -91,6 +147,24 @@ namespace cc
 		return Matrix3(*this).Transpose();
 	}
 
+	Matrix3& Matrix3::Invert()
+	{
+		detail::_cc_mat_inv<Matrix3, 3>(*this);
+		return *this;
+	}
+
+	Matrix3 Matrix3::Inverse() const
+	{
+		Matrix3 inverse = *this;
+		detail::_cc_mat_inv<Matrix3, 3>(inverse);
+		return inverse;
+	}
+
+	Float Matrix3::Det() const
+	{
+		//return detail::_cc_mat_det<Matrix3, 3>(*this);
+		return Float(0);
+	}
 
 	Matrix4::Matrix4()
 		: m()
@@ -99,7 +173,7 @@ namespace cc
 	Matrix4::Matrix4(Float val)
 		: m()
 	{
-		_cc_fill_mat_diag<Vector4, 4>(m, val);
+		detail::_cc_mat_fill_diag<Matrix4, 4>(*this, val);
 	}
 
 	Matrix4::Matrix4(const Vector4& row0, const Vector4& row1, const Vector4& row2, const Vector4& row3)
@@ -122,7 +196,7 @@ namespace cc
 
 	Matrix4& Matrix4::Transpose()
 	{
-		m = _cc_mat_transpose<std::array<Vector4, 4>, 4>(m);
+		detail::_cc_mat_tpose<Matrix4, 4>(*this);
 		return *this;
 	}
 
@@ -131,6 +205,24 @@ namespace cc
 		return Matrix4(*this).Transpose();
 	}
 
+	Matrix4& Matrix4::Invert()
+	{
+		detail::_cc_mat_inv<Matrix4, 4>(*this);
+		return *this;
+	}
+
+	Matrix4 Matrix4::Inverse() const
+	{
+		Matrix4 inverse = *this;
+		detail::_cc_mat_inv<Matrix4, 4>(inverse);
+		return inverse;
+	}
+
+	Float Matrix4::Det() const
+	{
+		//return detail::_cc_mat_det<Matrix4, 3>(*this);
+		return Float(0);
+	}
 
 	Matrix3 operator+(const Matrix3& m, const Matrix3& n)
 	{
@@ -144,7 +236,7 @@ namespace cc
 
 	Matrix3 operator*(const Matrix3& m, const Matrix3& n)
 	{
-		return _cc_mat_mult<Matrix3, 3>(m, n);
+		return detail::_cc_mat_mult<Matrix3, 3>(m, n);
 	}
 
 
@@ -179,7 +271,7 @@ namespace cc
 
 	Matrix4 operator*(const Matrix4& m, const Matrix4& n)
 	{
-		return _cc_mat_mult<Matrix4, 4>(m, n);
+		return detail::_cc_mat_mult<Matrix4, 4>(m, n);
 	}
 
 
@@ -225,27 +317,25 @@ namespace cc
 	}
 
 
-	/*
 	Vector2 operator*(const Vector2& u, const Matrix3& m)
 	{
 		Vector3 temp(u.x, u.y, 1.0);
-		return { Dot(m[1], temp), Dot(m[0], temp) };
+		return { Vector3::Dot(m[1], temp), Vector3::Dot(m[0], temp) };
 	}
 
 	Vector3 operator*(const Vector3& u, const Matrix3& m)
 	{
-		return { Dot(m[2], u), Dot(m[1], u), Dot(m[0], u) };
+		return { Vector3::Dot(m[2], u), Vector3::Dot(m[1], u), Vector3::Dot(m[0], u) };
 	}
 
 	Vector3 operator*(const Vector3& u, const Matrix4& m)
 	{
 		Vector4 temp(u.x, u.y, u.z, 1.0);
-		return { Dot(m[2], temp), Dot(m[1], temp), Dot(m[0], temp) };
+		return { Vector4::Dot(m[2], temp), Vector4::Dot(m[1], temp), Vector4::Dot(m[0], temp) };
 	}
 
 	Vector4 operator*(const Vector4& u, const Matrix4& m)
 	{
-		return { Dot(m[3], u), Dot(m[2], u), Dot(m[1], u), Dot(m[0], u) };
+		return { Vector4::Dot(m[3], u), Vector4::Dot(m[2], u), Vector4::Dot(m[1], u), Vector4::Dot(m[0], u) };
 	}
-	*/
 }
