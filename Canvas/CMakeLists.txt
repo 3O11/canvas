@@ -39,6 +39,8 @@ add_library (canvas STATIC
 	"OpenGL/Texture.cpp"
 	"OpenGL/Buffers.h"
 	"OpenGL/Buffers.cpp"
+	"Debug/PrintFunctions.h"
+	"Debug/PrintFunctions.cpp"
 )
 
 target_include_directories (canvas PUBLIC
@@ -50,6 +52,7 @@ target_include_directories (canvas PUBLIC
 	"Drawing"
 	"Window"
 	"OpenGL"
+	"Debug"
 )
 
 add_subdirectory(".third-party")
