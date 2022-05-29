@@ -43,13 +43,13 @@ R"(
     in vec4 pos;
     in vec2 tex;
 
-    uniform sampler2D u_texture;
+    uniform sampler2D uTexture;
 
     out vec4 outColour;
 
     void main()
     {
-        outColour = texture2D(u_texture, tex);
+        outColour = texture2D(uTexture, tex);
     }
 )";
 
@@ -248,7 +248,7 @@ int main()
 
         ImGui::Text("Current conic section: %s, Eccentricity: %.4f", conicSection->DetermineType().c_str(), conicSection->Eccentricity());
         
-        ImGui::Text("Center: %s, Radii: %s", conicSection->Center(), conicSection->Radii());
+        ImGui::Text("Center: %s, Radii: %s", conicSection->Center().c_str(), conicSection->Radii().c_str());
 
         ImGui::Text(" ");
 
@@ -267,6 +267,7 @@ int main()
         ImGui::Text("Default increment is 0.1, hold 'Ctrl' to increment by 1.");
         ImGui::Text("The origin [0, 0] is in the center of the screen.");
         ImGui::Text("Performance: %.2f ms frametime, %.2f FPS", ImGui::GetIO().DeltaTime * 1000.0f, ImGui::GetIO().Framerate);
+        ImGui::Text("The drawing is unfortunately completely serial,\nso the performance suffers with repeated redrawing.");
 
         ImGui::End();
 
@@ -291,7 +292,7 @@ int main()
 
         shader.Bind();
         tex.Bind();
-        shader.SetUniform1i("u_texture", 0);
+        shader.SetUniform1i("uTexture", 0);
 
         vao.Bind();
         ebo.Bind();
