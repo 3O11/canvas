@@ -51,7 +51,7 @@ namespace cc
             ImGui::StyleColorsDark();
 
             ImGui_ImplGlfw_InitForOpenGL(m_glfwWindow, true);
-            ImGui_ImplOpenGL3_Init("#version 150");
+            ImGui_ImplOpenGL3_Init();
         }
 
         void BeginFrame()

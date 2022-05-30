@@ -18,7 +18,7 @@ namespace cc
         Matrix4 RotateY     (const Matrix4& mat, Float angle);
         Matrix4 RotateZ     (const Matrix4& mat, Float angle);
 
-        Matrix4 Perspective ();
+        Matrix4 Perspective (Float aspectRatio, Float fov, Float near, Float far);
     }
 }
 

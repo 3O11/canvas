@@ -4,6 +4,7 @@
 #include "stb_image_write.h"
 
 #include <iostream>
+#include <utility>
 
 namespace cc
 {
@@ -48,6 +49,28 @@ namespace cc
 		for (size_t i = 0; i < m_Pixels.size(); i++)
 		{
 			m_Pixels[i] = fillColour;
+		}
+	}
+
+	void Image::FlipVertically()
+	{
+		for (int32_t i = 0; i <= m_Height / 2; ++i)
+		{
+			for (int32_t j = 0; j < m_Width; ++j)
+			{
+				std::swap(this->operator()(j, i), this->operator()(j, m_Height - i - 1));
+			}
+		}
+	}
+
+	void Image::FlipHorizontally()
+	{
+		for (int32_t i = 0; i < m_Height; ++i)
+		{
+			for (int32_t j = 0; j <= m_Width / 2; ++j)
+			{
+				std::swap(this->operator()(j, i), this->operator()(m_Width - j - 1, m_Height));
+			}
 		}
 	}
 
@@ -117,6 +140,28 @@ namespace cc
 		for (size_t i = 0; i < m_Pixels.size(); i++)
 		{
 			m_Pixels[i] = fillColour;
+		}
+	}
+
+	void Image8::FlipVertically()
+	{
+		for (int32_t i = 0; i <= m_Height / 2; ++i)
+		{
+			for (int32_t j = 0; j < m_Width; ++j)
+			{
+				std::swap(this->operator()(j, i), this->operator()(j, m_Height - i - 1));
+			}
+		}
+	}
+
+	void Image8::FlipHorizontally()
+	{
+		for (int32_t i = 0; i < m_Height; ++i)
+		{
+			for (int32_t j = 0; j <= m_Width / 2; ++j)
+			{
+				std::swap(this->operator()(j, i), this->operator()(m_Width - j - 1, m_Height));
+			}
 		}
 	}
 

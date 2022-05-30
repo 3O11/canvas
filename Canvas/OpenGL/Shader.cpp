@@ -1,5 +1,7 @@
 #include "Shader.h"
 
+#include "Matrix.h"
+
 #include <glad/glad.h>
 #include <vector>
 
@@ -52,6 +54,11 @@ namespace cc
     void Shader::SetUniform1i(const std::string& name, int32_t value)
     {
         glUniform1i(getLocation(name), value);
+    }
+
+    void Shader::SetUniformMatrix4(const std::string& name, const Matrix4& matrix)
+    {
+        glUniformMatrix4fv(getLocation(name), 1, true, &matrix[0][0]);
     }
 
     uint32_t Shader::compileShader(uint32_t shaderType, const std::string& source)

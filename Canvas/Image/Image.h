@@ -33,6 +33,8 @@ namespace cc
 		const RGBA& operator[] (int32_t pixelIndex) const;
 
 		void Fill(const RGBA& fillColour);
+		void FlipVertically();
+		void FlipHorizontally();
 
 		int32_t Width() const;
 		int32_t Height() const;
@@ -61,6 +63,8 @@ namespace cc
 		const RGBA8& operator[] (int32_t pixelIndex) const;
 
 		void Fill(const RGBA8& fillColour);
+		void FlipVertically();
+		void FlipHorizontally();
 
 		int32_t Width() const;
 		int32_t Height() const;

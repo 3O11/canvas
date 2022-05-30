@@ -8,6 +8,8 @@
 
 namespace cc
 {
+    struct Matrix4;
+
     class Shader
     {
     public:
@@ -23,6 +25,7 @@ namespace cc
         void Bind() const;
 
         void SetUniform1i(const std::string& name, int32_t value);
+        void SetUniformMatrix4(const std::string& name, const Matrix4& matrix);
     private:
         uint32_t compileShader(uint32_t shaderType, const std::string& source);
         int32_t getLocation(const std::string& name);

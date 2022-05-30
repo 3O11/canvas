@@ -20,7 +20,7 @@ namespace cc
     void Canvas::Draw(std::shared_ptr<Shape> shape, const RGBA& colour)
     {
         // TODO: Add bounds so that it's not necessary to traverse the entire
-        // image for every Draw.
+        // image for every Draw. -- or make it multithreaded.
 
         for (int32_t y = 0; y < m_internalImage.Height(); y++)
         {

@@ -82,5 +82,21 @@ namespace cc
 
             return rotation * mat;
         }
+
+        Matrix4 Perspective(Float aspectRatio, Float fov, Float near, Float far)
+        {
+            Float tanHalfFov = std::tan(fov / 2);
+
+            Matrix4 projection;
+
+            projection[0][0] = Float(1) / (aspectRatio * tanHalfFov);
+            projection[1][1] = Float(1) / (tanHalfFov);
+            projection[2][2] = -(far + near) / (far - near);
+            projection[2][3] = -Float(1);
+            projection[3][2] = -(Float(2) * far * near) / (far - near);
+            projection.Transpose();
+
+            return projection;
+        }
     }
 }

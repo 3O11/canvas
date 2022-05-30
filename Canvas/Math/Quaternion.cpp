@@ -24,6 +24,7 @@ namespace cc
 
         q.v = axis.Normalized() * std::sin(angle / 2);
         q.s = std::cos(angle / 2);
+        q.Normalize();
 
         return q;
     }
@@ -171,7 +172,7 @@ namespace cc
     Quaternion Lerp(Float value, const Quaternion& start, const Quaternion& end)
     {
         value = Clamp(value, Float(0), Float(1));
-        return (1 - value) * start + value * end;
+        return ((1 - value) * start + value * end).Normalized();
     }
 
     Quaternion Slerp(Float value, const Quaternion& start, const Quaternion& end)
@@ -182,6 +183,6 @@ namespace cc
         Float angle = std::acos(cos_angle);
         Float sin_angle = std::sin(angle);
 
-        return (std::sin(1 - value) * angle / sin_angle) * start + (std::sin(value) * angle / sin_angle) * end;
+        return ((std::sin(1 - value) * angle / sin_angle) * start + (std::sin(value) * angle / sin_angle) * end).Normalized();
     }
 }
