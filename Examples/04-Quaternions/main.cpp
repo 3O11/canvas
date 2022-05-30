@@ -188,9 +188,17 @@ int main()
 	Texture topGrassTex = Texture(GetGrassTop());
 	Texture bottomGrassTex = Texture(GetGrassBottom());
 
-	Quaternion quatStart = Quaternion::Make(Pi/2, { 1.0f, 0.0f, 0.0f });
-	Quaternion quatEnd   = Quaternion::Make(-Pi, { 1.0f, 1.0f, 0.0f });
-	Float slerpValue = 0.0f;
+	Float startAngle = -Pi / 2;
+	Vector3 startAxis = { 0.0f, 1.0f, 0.0f };
+	Float endAngle = Pi;
+	Vector3 endAxis = { 1.0f, 1.0f, 0.0f };
+
+	Float lerpValue = 0.0f;
+	Float animSpeed = 0.01f;
+
+	bool animate = false;
+	bool increment = false;
+	bool slerp = false;
 
 	while (!window.IsClosed())
 	{
@@ -198,18 +206,65 @@ int main()
 
 		ImGui::Begin("Options and Info");
 
-		ImGui::SliderFloat("Interpolation", &slerpValue, 0.0f, 1.0f, "%.4f");
+		ImGui::Checkbox("Animate", &animate);
+		ImGui::DragFloat("Animation speed", &animSpeed, 0.001f, 0.0001f, 0.1f, "%.4f");
 
+		ImGui::Checkbox("SLERP", &slerp); ImGui::SameLine(); ImGui::Text("(LERP by default)");
+		
+		ImGui::Text("Initial rotation:");
+
+		ImGui::DragFloat("Initial Angle", &startAngle, 0.1f, -Pi, Pi, "%.4f");
+		ImGui::DragFloat3("Initial Axis", &startAxis[0], 0.1f, -100.0f, 100.0f, "%.4f");
+
+		ImGui::Text("Final rotation:");
+
+		ImGui::DragFloat("Final Angle", &endAngle, 0.1f, -Pi, Pi, "%.4f");
+		ImGui::DragFloat3("Final Axis", &endAxis[0], 0.1f, -100.0f, 100.0f, "%.4f");
+
+		if (ImGui::Button("Reset"))
+		{
+			startAngle = -Pi / 2;
+			startAxis = { 0.0f, 1.0f, 0.0f };
+			endAngle = Pi;
+			endAxis = { 1.0f, 1.0f, 0.0f };
+
+			lerpValue = 0.0f;
+			animSpeed = 0.01f;
+
+			animate = false;
+			slerp = false;
+		}
+
+		ImGui::Text("The axes do not need to be unit length,\nthey get normalized automatically.");
 		ImGui::Text("Performance: %.2f ms frametime, %.2f FPS", ImGui::GetIO().DeltaTime * 1000.0f, ImGui::GetIO().Framerate);
 
 		ImGui::End();
 
+		if (animate)
+		{
+			if (increment) lerpValue += animSpeed;
+			else lerpValue -= animSpeed;
+
+			if (lerpValue > 1.0f) increment = false;
+			if (lerpValue < 0.0f) increment = true;
+		}
+
+		Quaternion quatStart = Quaternion::Make(startAngle, startAxis);
+		Quaternion quatEnd = Quaternion::Make(endAngle, endAxis);
+
 		vao.Bind();
 		shader.Bind();
 		shader.SetUniform1i("uTexture", 0);
-		shader.SetUniformMatrix4("uModel", Slerp(slerpValue, quatStart, quatEnd).ToMatrix4());
-		shader.SetUniformMatrix4("uView",  Matrix4(1.0f));
-		shader.SetUniformMatrix4("uProj", transform::Perspective(16.0f / 9.0f, Pi / 2, 0.1f, 1000.0f));
+		if (slerp)
+		{
+			shader.SetUniformMatrix4("uModel", Slerp(lerpValue, quatStart, quatEnd).ToMatrix4());
+		}
+		else
+		{
+			shader.SetUniformMatrix4("uModel", Lerp(lerpValue, quatStart, quatEnd).ToMatrix4());
+		}
+		shader.SetUniformMatrix4("uView", transform::Translate(Matrix4(1.0f), {0.0f, 0.0f, -1.3f}));
+		shader.SetUniformMatrix4("uProj", transform::Perspective(Float(window.GetWidth()) / window.GetHeight(), Pi / 2, 0.1f, 1000.0f));
 
 		sideGrassTex.Bind(0);
 		cubeSideEbo.Bind();

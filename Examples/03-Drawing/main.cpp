@@ -230,7 +230,8 @@ int main()
     Shader shader(vertexShader, fragmentShader);
     Texture tex(Image(640, 480, {1.0f, 1.0f, 1.0f, 1.0f}));
 
-    bool Updated = true;
+    int32_t idleCounter = 0;
+    bool Update = true;
 
     VertexArray vao;
     VertexBuffer vbo(&points[0], 4, sizeof(Vertex));
@@ -253,14 +254,19 @@ int main()
         ImGui::Text(" ");
 
         ImGui::Text("Parameters: ");
-        Updated |= ImGui::InputFloat("x^2", &x2, 0.1f, 1.0f, "%.4f");
-        Updated |= ImGui::InputFloat("y^2", &y2, 0.1f, 1.0f, "%.4f");
-        Updated |= ImGui::InputFloat("xy",  &xy, 0.1f, 1.0f, "%.4f");
-        Updated |= ImGui::InputFloat("x",   &x,  0.1f, 1.0f, "%.4f");
-        Updated |= ImGui::InputFloat("y",   &y,  0.1f, 1.0f, "%.4f");
-        Updated |= ImGui::InputFloat("c",   &c,  0.1f, 1.0f, "%.4f");
-        Updated |= ImGui::InputFloat("scale", &scale, 0.1f, 1.0f, "%.4f");
-        Updated |= ImGui::InputFloat("threshold", &threshold, 0.1f, 1.0f, "%.4f");
+        ImGui::InputFloat("x^2", &x2, 0.1f, 1.0f, "%.4f");
+        ImGui::InputFloat("y^2", &y2, 0.1f, 1.0f, "%.4f");
+        ImGui::InputFloat("xy",  &xy, 0.1f, 1.0f, "%.4f");
+        ImGui::InputFloat("x",   &x,  0.1f, 1.0f, "%.4f");
+        ImGui::InputFloat("y",   &y,  0.1f, 1.0f, "%.4f");
+        ImGui::InputFloat("c",   &c,  0.1f, 1.0f, "%.4f");
+        ImGui::InputFloat("scale", &scale, 0.1f, 1.0f, "%.4f");
+        ImGui::InputFloat("threshold", &threshold, 0.1f, 1.0f, "%.4f");
+
+        ImGui::Text(" ");
+
+        Update = ImGui::Button("Redraw");
+        ImGui::Text("Redraws automatically around once per second.");
 
         ImGui::Text(" ");
 
@@ -271,7 +277,13 @@ int main()
 
         ImGui::End();
 
-        if (Updated)
+        if (++idleCounter == 60)
+        {
+            idleCounter = 0;
+            Update = true;
+        }
+
+        if (Update)
         {
             if (scale < FloatEps) scale = FloatEps;
 
@@ -287,7 +299,7 @@ int main()
 
             tex = Texture(canvas.ImageHandle());
 
-            Updated = false;
+            Update = false;
         }
 
         shader.Bind();

@@ -92,9 +92,8 @@ namespace cc
             projection[0][0] = Float(1) / (aspectRatio * tanHalfFov);
             projection[1][1] = Float(1) / (tanHalfFov);
             projection[2][2] = -(far + near) / (far - near);
-            projection[2][3] = -Float(1);
-            projection[3][2] = -(Float(2) * far * near) / (far - near);
-            projection.Transpose();
+            projection[3][2] = -Float(1);
+            projection[2][3] = -(Float(2) * far * near) / (far - near);
 
             return projection;
         }
