@@ -20,6 +20,7 @@ work on the QoL things around this codebase.
 ## Usage
 
 If you want to use this library, despite the limited functionality and lack of
+documentation and tests. It should be as simple as cloning this directory into your
 own project and linking it via CMake:
 ```cmake
 target_link_libraries ($YOUR_PROJECT PRIVATE canvas)
