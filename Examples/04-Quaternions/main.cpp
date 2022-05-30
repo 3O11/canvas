@@ -208,6 +208,7 @@ int main()
 
 		ImGui::Checkbox("Animate", &animate);
 		ImGui::DragFloat("Animation speed", &animSpeed, 0.001f, 0.0001f, 0.1f, "%.4f");
+		ImGui::SliderFloat("Animation progress", &lerpValue, 0.0f, 1.0f, "%.4f");
 
 		ImGui::Checkbox("SLERP", &slerp); ImGui::SameLine(); ImGui::Text("(LERP by default)");
 		
