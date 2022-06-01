@@ -30,6 +30,11 @@ namespace cc
 
     Texture& Texture::operator=(Texture&& tx)
     {
+        if (m_textureID != 0)
+        {
+            glDeleteTextures(1, &m_textureID);
+        }
+
         m_textureID = tx.m_textureID;
         tx.m_textureID = 0;
         return *this;
