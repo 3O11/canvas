@@ -181,8 +181,8 @@ namespace cc
 
         Float cos_angle = start.s * end.s + Vector3::Dot(start.v, end.v);
         Float angle = std::acos(cos_angle);
-        Float sin_angle = std::sin(angle);
+        Float sin_angle = 1 - cos_angle * cos_angle; //std::sin(angle);
 
-        return ((std::sin(1 - value) * angle / sin_angle) * start + (std::sin(value) * angle / sin_angle) * end).Normalized();
+        return ((std::sin((1 - value) * angle) / sin_angle) * start + (std::sin(value * angle) / sin_angle) * end);
     }
 }
