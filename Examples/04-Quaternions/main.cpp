@@ -188,7 +188,7 @@ int main()
 	Texture topGrassTex = Texture(GetGrassTop());
 	Texture bottomGrassTex = Texture(GetGrassBottom());
 
-	Float startAngle = -Pi / 2;
+	Float startAngle = 0;
 	Vector3 startAxis = { 0.0f, 1.0f, 0.0f };
 	Float endAngle = Pi;
 	Vector3 endAxis = { 1.0f, 1.0f, 0.0f };
@@ -205,6 +205,8 @@ int main()
 		window.BeginFrame();
 
 		ImGui::Begin("Options and Info");
+
+		//ImGui::SetWindowFontScale(1.5f);
 
 		ImGui::Checkbox("Animate", &animate);
 		ImGui::DragFloat("Animation speed", &animSpeed, 0.001f, 0.0001f, 0.1f, "%.4f");
@@ -224,7 +226,7 @@ int main()
 
 		if (ImGui::Button("Reset"))
 		{
-			startAngle = -Pi / 2;
+			startAngle = 0;
 			startAxis = { 0.0f, 1.0f, 0.0f };
 			endAngle = Pi;
 			endAxis = { 1.0f, 1.0f, 0.0f };
