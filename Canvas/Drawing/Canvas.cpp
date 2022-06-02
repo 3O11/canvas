@@ -28,20 +28,22 @@ namespace cc
             {
                 RGBA contribution = colour;
                 contribution.a *= shape->Contribution(Float(x - m_xOffset), Float(y - m_yOffset));
-                Draw(x + m_xOffset, y + m_yOffset, contribution);
+                Draw(x - m_xOffset, y - m_yOffset, contribution);
             }
         }
     }
 
     void Canvas::Draw(int32_t x, int32_t y, const RGBA& colour)
     {
-        RGBA newColour = m_internalImage(x - m_xOffset, y - m_yOffset);
+        if (x + m_xOffset < 0 || y + m_yOffset < 0 || x + m_xOffset >= m_internalImage.Width() || y + m_yOffset >= m_internalImage.Height()) return;
+
+        RGBA newColour = m_internalImage(x + m_xOffset, y + m_yOffset);
         newColour.r = newColour.r * (1 - colour.a) + colour.r * colour.a;
         newColour.g = newColour.g * (1 - colour.a) + colour.g * colour.a;
         newColour.b = newColour.b * (1 - colour.a) + colour.b * colour.a;
         newColour.a = std::max(newColour.a, colour.a);
 
-        m_internalImage(x - m_xOffset, y - m_yOffset) = newColour;
+        m_internalImage(x + m_xOffset, y + m_yOffset) = newColour;
     }
 
     void Canvas::SetOffset(int32_t x, int32_t y)
