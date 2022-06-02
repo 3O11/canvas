@@ -360,7 +360,7 @@ int main()
 			if (drawImplicit) canvas.Draw(conicSection, { 1.0f, 0.0f, 0.0f, 1.0f });
 
 			auto conicType = conicSection->DetermineType();
-			if (conicType == "Ellipse")
+			if (conicType == "Ellipse" || conicType == "Circle")
 			{
 				Vector2 center = conicSection->Center();
 				Vector2 radii = conicSection->Radii();
@@ -371,11 +371,8 @@ int main()
 					Float t = 2 * Pi * i / resolution;
 
 					Vector2 point;
-					point.x = radii.x * std::cos(t);
-					point.y = radii.y * std::sin(t);
-
-					point.x = point.x * std::cos(angle) - point.y * std::sin(angle);
-					point.y = point.x * std::sin(angle) + point.y * std::cos(angle);
+					point.x = radii.x * std::cos(t) * std::cos(angle) - radii.y * std::sin(t) * std::sin(angle);
+					point.y = radii.x * std::cos(t) * std::sin(angle) + radii.y * std::sin(t) * std::cos(angle);
 
 					point += center;
 					point *= scale;
