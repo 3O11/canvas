@@ -19,8 +19,8 @@ namespace cc
         Shader(const Shader& shader) = delete;
         Shader& operator=(const Shader& shader) = delete;
 
-        Shader(Shader&& sh);
-        Shader& operator=(Shader&& sh);
+        Shader(Shader&& sh) noexcept;
+        Shader& operator=(Shader&& sh) noexcept;
 
         void Bind() const;
 

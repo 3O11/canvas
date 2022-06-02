@@ -31,15 +31,20 @@ namespace cc
         }
     }
 
-    Shader::Shader(Shader&& sh)
+    Shader::Shader(Shader&& sh) noexcept
     {
         m_shaderID = sh.m_shaderID;
         m_locationCache = std::move(sh.m_locationCache);
         sh.m_shaderID = 0;
     }
 
-    Shader& Shader::operator=(Shader&& sh)
+    Shader& Shader::operator=(Shader&& sh) noexcept
     {
+        if (m_shaderID)
+        {
+            glDeleteProgram(m_shaderID);
+        }
+
         m_shaderID = sh.m_shaderID;
         m_locationCache = std::move(sh.m_locationCache);
         sh.m_shaderID = 0;

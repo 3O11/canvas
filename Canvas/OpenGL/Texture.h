@@ -14,8 +14,8 @@ namespace cc
         Texture(const Texture& texture) = delete;
         Texture& operator=(const Texture& texture) = delete;
 
-        Texture(Texture&& tx);
-        Texture& operator=(Texture&& tx);
+        Texture(Texture&& tx) noexcept;
+        Texture& operator=(Texture&& tx) noexcept;
 
         void Bind(uint32_t slot = 0);
     private:

@@ -6,6 +6,12 @@ namespace cc
 {
     Texture::Texture(const Image& image)
     {
+        if (image.Width() == 0 || image.Height() == 0)
+        {
+            m_textureID = 0;
+            return;
+        }
+
         glGenTextures(1, &m_textureID);
         glBindTexture(GL_TEXTURE_2D, m_textureID);
 
@@ -22,15 +28,15 @@ namespace cc
         glDeleteTextures(1, &m_textureID);
     }
 
-    Texture::Texture(Texture&& tx)
+    Texture::Texture(Texture&& tx) noexcept
     {
         m_textureID = tx.m_textureID;
         tx.m_textureID = 0;
     }
 
-    Texture& Texture::operator=(Texture&& tx)
+    Texture& Texture::operator=(Texture&& tx) noexcept
     {
-        if (m_textureID != 0)
+        if (m_textureID)
         {
             glDeleteTextures(1, &m_textureID);
         }

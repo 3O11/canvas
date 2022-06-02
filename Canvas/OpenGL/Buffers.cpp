@@ -30,7 +30,7 @@ namespace cc
 
     VertexBuffer::~VertexBuffer()
     {
-        if (m_vboID != 0)
+        if (m_vboID)
         {
             glDeleteBuffers(1, &m_vboID);
         }
@@ -45,6 +45,11 @@ namespace cc
 
     VertexBuffer& VertexBuffer::operator=(VertexBuffer&& vb) noexcept
     {
+        if (m_vboID)
+        {
+            glDeleteBuffers(1, &m_vboID);
+        }
+
         m_vboID = vb.m_vboID;
         m_layout = std::move(vb.m_layout);
         vb.m_vboID = 0;
@@ -77,7 +82,7 @@ namespace cc
 
     ElementBuffer::~ElementBuffer()
     {
-        if (m_eboID != 0)
+        if (m_eboID)
         {
             glDeleteBuffers(1, &m_eboID);
         }
@@ -92,6 +97,11 @@ namespace cc
 
     ElementBuffer& ElementBuffer::operator=(ElementBuffer&& eb) noexcept
     {
+        if (m_eboID)
+        {
+            glDeleteBuffers(1, &m_eboID);
+        }
+
         m_eboID = eb.m_eboID;
         m_indexCount = eb.m_indexCount;
         m_eboID = 0;
@@ -116,7 +126,7 @@ namespace cc
 
     VertexArray::~VertexArray()
     {
-        if(m_vaoID != 0)
+        if(m_vaoID)
         {
             glDeleteVertexArrays(1, &m_vaoID);
         }
@@ -130,6 +140,11 @@ namespace cc
 
     VertexArray& VertexArray::operator=(VertexArray&& va) noexcept
     {
+        if (m_vaoID)
+        {
+            glDeleteVertexArrays(1, &m_vaoID);
+        }
+
         m_vaoID = va.m_vaoID;
         va.m_vaoID = 0;
         return *this;
