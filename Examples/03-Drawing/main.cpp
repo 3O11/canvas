@@ -170,15 +170,13 @@ public:
 	{
 		Float disc = m_xy * m_xy - 4 * m_x2 * m_y2;
 
-		Float num1 = (m_x2 * m_y * m_y + m_y2 * m_x * m_x - m_xy * m_x * m_y + m_c * disc);
+		Float num1 = 2 * (m_x2 * m_y * m_y + m_y2 * m_x * m_x - m_xy * m_x * m_y + m_c * disc);
 		Float num2 = std::sqrt((m_x2 - m_y2) * (m_x2 - m_y2) + m_xy * m_xy);
 
 		Vector2 radii;
 
-		radii.x = -std::sqrt(2 * num1 * ((m_x2 + m_y2) + std::sqrt(num2))) / disc;
-		radii.y = -std::sqrt(2 * num1 * ((m_x2 + m_y2) - std::sqrt(num2))) / disc;
-
-		if (radii.x < radii.y) std::swap(radii.x, radii.y);
+		radii.x = -std::sqrt(num1 * ((m_x2 + m_y2) + num2)) / disc;
+		radii.y = -std::sqrt(num1 * ((m_x2 + m_y2) - num2)) / disc;
 
 		return radii;
 	}
@@ -283,7 +281,9 @@ int main()
 	Float max = 1000;
 	Float scale = 128.0f;
 	Float threshold = 1;
+	int32_t resolution = 1000;
 	std::shared_ptr<ConicSection> conicSection = std::make_shared<ConicSection>();
+	bool drawImplicit = true;
 
 	Shader shader(vertexShader, fragmentShader);
 	Texture tex(Image(640, 480, {1.0f, 1.0f, 1.0f, 1.0f}));
@@ -320,6 +320,8 @@ int main()
 		ImGui::InputFloat("c",   &c,  0.1f, 1.0f, "%.4f");
 		ImGui::InputFloat("scale", &scale, 0.1f, 1.0f, "%.4f");
 		ImGui::InputFloat("threshold", &threshold, 0.1f, 1.0f, "%.4f");
+		ImGui::DragInt("ellipse samples", &resolution, 10, 100, 10000);
+		ImGui::Checkbox("draw implicitly", &drawImplicit);
 		
 		ImGui::Text(" ");
 
@@ -355,7 +357,32 @@ int main()
 			conicSection->SetThreshold(threshold);
 
 			canvas.Clear({ 1.0f, 1.0f, 1.0f });
-			canvas.Draw(conicSection, { 1.0f, 0.0f, 0.0f, 1.0f });
+			if (drawImplicit) canvas.Draw(conicSection, { 1.0f, 0.0f, 0.0f, 1.0f });
+
+			auto conicType = conicSection->DetermineType();
+			if (conicType == "Ellipse")
+			{
+				Vector2 center = conicSection->Center();
+				Vector2 radii = conicSection->Radii();
+				Float angle = conicSection->Angle();
+
+				for (int32_t i = 0; i <= resolution; ++i)
+				{
+					Float t = 2 * Pi * i / resolution;
+
+					Vector2 point;
+					point.x = radii.x * std::cos(t);
+					point.y = radii.y * std::sin(t);
+
+					point.x = point.x * std::cos(angle) - point.y * std::sin(angle);
+					point.y = point.x * std::sin(angle) + point.y * std::cos(angle);
+
+					point += center;
+					point *= scale;
+
+					canvas.Draw(point.x, point.y, {0.0f, 1.0f, 0.0f, 1.0f});
+				}
+			}
 
 			tex = Texture(canvas.ImageHandle());
 
