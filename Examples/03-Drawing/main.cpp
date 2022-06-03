@@ -95,6 +95,8 @@ public:
 		m_x  = x;
 		m_y  = y;
 		m_c  = c;
+
+		m_disc = m_xy * m_xy - 4 * m_x2 * m_y2;
 	}
 
 	void SetScale(Float scaleMul)
@@ -116,32 +118,25 @@ public:
 
 	std::string DetermineType()
 	{
-		Float disc = (m_xy * m_xy) - (4 * m_x2 * m_y2);
-
-		if (std::abs(m_x2) <= FloatEps && std::abs(m_y2) <= FloatEps && std::abs(m_xy) <= FloatEps)
+		if (Equal(m_x2, 0.0f) && Equal(m_y2, 0.0f) && Equal(m_xy, 0.0f))
 		{
-			return "Linear (Not a Conic)";
+			return "Linear (or Constant)";
 		}
 
-		if (std::abs(disc) <= FloatEps)
+		if (Equal(m_disc, 0.0f))
 		{
 			return "Parabola";
 		}
 
-		if (disc > 0)
+		if (m_disc > 0)
 		{
-			if (std::abs(m_x2 + m_y2) <= FloatEps)
-			{
-				return "Rectangular hyperbola";
-			}
-
 			return "Hyperbola";
 		}
 		else
 		{
-			if (std::abs(m_x2 - m_y2) <= FloatEps && std::abs(m_xy) <= FloatEps)
+			if (Equal(m_x2, m_y2) && Equal(m_xy, 0.0f))
 			{
-				if (std::abs(m_x2) <= FloatEps && std::abs(m_y2) <= FloatEps)
+				if (Equal(m_x2, 0.0f) && Equal(m_y2, 0.0f))
 				{
 					return "Point";
 				}
@@ -159,24 +154,21 @@ public:
 	{
 		Vector2 center;
 
-		Float disc = m_xy * m_xy - 4 * m_x2 * m_y2;
-		center.x = (2 * m_y2 * m_x - m_xy * m_y) / disc;
-		center.y = (2 * m_x2 * m_y - m_xy * m_x) / disc;
+		center.x = (2 * m_y2 * m_x - m_xy * m_y) / m_disc;
+		center.y = (2 * m_x2 * m_y - m_xy * m_x) / m_disc;
 
 		return center;
 	}
 
 	Vector2 Radii()
 	{
-		Float disc = m_xy * m_xy - 4 * m_x2 * m_y2;
-
-		Float num1 = 2 * (m_x2 * m_y * m_y + m_y2 * m_x * m_x - m_xy * m_x * m_y + m_c * disc);
+		Float num1 = 2 * (m_x2 * m_y * m_y + m_y2 * m_x * m_x - m_xy * m_x * m_y + m_c * m_disc);
 		Float num2 = std::sqrt((m_x2 - m_y2) * (m_x2 - m_y2) + m_xy * m_xy);
 
 		Vector2 radii;
 
-		radii.x = -std::sqrt(num1 * ((m_x2 + m_y2) + num2)) / disc;
-		radii.y = -std::sqrt(num1 * ((m_x2 + m_y2) - num2)) / disc;
+		radii.x = -std::sqrt(num1 * ((m_x2 + m_y2) + num2)) / m_disc;
+		radii.y = -std::sqrt(num1 * ((m_x2 + m_y2) - num2)) / m_disc;
 
 		return radii;
 	}
@@ -245,6 +237,8 @@ private:
 
 	Float m_scale = Float(1) / Float(128);
 	Float m_threshold = Float(1);
+
+	Float m_disc;
 };
 
 #define USE_WINDOW
