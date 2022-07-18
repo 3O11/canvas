@@ -1,6 +1,6 @@
-﻿cmake_minimum_required (VERSION 3.22)
+﻿cmake_minimum_required (VERSION 3.21)
 
 project ("canvas")
 
 add_subdirectory("Canvas")
-add_subdirectory("Examples")
+add_subdirectory("Projects")
