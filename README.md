@@ -1,21 +1,24 @@
 # canvas
 
-## Purpose
+This is a small library that I'm cobbling together to simplify the process of
+making verious Computer Graphics showcases and examples. So far, I've only made
+a lot more work for myself, but hopefully, sometime in the future, I'm not
+going to regret the time spent on this.
 
-This is a small personal project to enable quick and easy showcases of
-various computer graphics techniques and effects.
-
-## Examples
-
-The examples directory contains various showcases of the functionality provided
-by the canvas library. The tools provided by the library are still very limited,
-so there isn't yet much to show.
+The project is currently undergoing a fairly large rewrite - which might be
+surprising, given there is not that much code yet. It is a painful lesson in
+why a lone programmer with little experience probably shouldn't be designing a
+whole library.
 
 ## Documentation
 
-The documentation of this project is currently severely lacking,
-because there is none. This should change as soon as I have more time to
-work on the QoL things around this codebase.
+There is no documentation yet. I'm planning on adding documentation comments
+in the process of cleaning up in various places. I also have plans to add
+tests, but I'm not sure that there is that much to actually test yet (tests
+will become very relevant once there are some actual algorithms).
+
+Some proper documentation is also in the works, but it's not decided in what
+format the documentation will be presented.
 
 ## Usage
 
