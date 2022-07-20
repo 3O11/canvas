@@ -3,6 +3,8 @@
 
 #include "Types.h"
 
+// TODO: Add templates for additional Vector types, e.g. Vector3d, Vector3i
+
 namespace cc
 {
 	struct Vector2 final

@@ -177,6 +177,8 @@ namespace cc
 
     Quaternion Slerp(Float value, const Quaternion& start, const Quaternion& end)
     {
+        // TODO: Something is not quite right here, I'll need to investigate this later.
+
         value = Clamp(value, Float(0), Float(1));
 
         Float cos_angle = start.s * end.s + Vector3::Dot(start.v, end.v);

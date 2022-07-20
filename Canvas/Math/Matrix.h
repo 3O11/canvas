@@ -7,6 +7,8 @@
 
 #include <array>
 
+// TODO: add templates for additional matrix types, same as in Vector.h
+
 namespace cc
 {
 	struct Matrix3 final
@@ -22,9 +24,9 @@ namespace cc
 		Matrix3& Transpose();
 		Matrix3 Transposed() const;
 
+		// TODO: These are not implemented yet
 		Matrix3& Invert();
 		Matrix3 Inverse() const;
-
 		Float Det() const;
 
 	private:
@@ -44,9 +46,9 @@ namespace cc
 		Matrix4& Transpose();
 		Matrix4 Transposed() const;
 
+		// TODO: These are not implemented yet
 		Matrix4& Invert();
 		Matrix4 Inverse() const;
-
 		Float Det() const;
 
 	private:
