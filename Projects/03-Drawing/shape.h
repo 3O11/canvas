@@ -1,17 +1,14 @@
-#ifndef _CC_SHAPE_H
-#define _CC_SHAPE_H
+#ifndef __SHAPE_H
+#define __SHAPE_H
 
 #include "Types.h"
 
-namespace cc
+class Shape
 {
-    class Shape
-    {
-    public:
-        virtual Float Contribution(Float x, Float y) = 0;
-        virtual ~Shape() {};
-    protected:
-    };
-}
+public:
+    virtual cc::Float Contribution(cc::Float x, cc::Float y) = 0;
+    virtual ~Shape() {};
+protected:
+};
 
-#endif //_CC_SHAPE_H
+#endif //__SHAPE_H
