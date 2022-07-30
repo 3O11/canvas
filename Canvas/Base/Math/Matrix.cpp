@@ -4,6 +4,7 @@
 
 namespace cc
 {
+	/*
 	namespace detail
 	{
 		template<typename Matrix, size_t dim>
@@ -74,7 +75,7 @@ namespace cc
 			return cofactor;
 		}
 
-		/*template<typename Matrix, size_t dim>
+		template<typename Matrix, size_t dim>
 		inline constexpr Float _cc_mat_det(const Matrix& m)
 		{
 			if constexpr (dim == 1) return m[0][0];
@@ -91,7 +92,7 @@ namespace cc
 			}
 
 			return det;
-		}*/
+		}
 
 		template<typename Matrix, size_t dim>
 		inline constexpr void _cc_mat_inv(Matrix& m)
@@ -108,6 +109,7 @@ namespace cc
 			}
 		}
 	}
+	*/
 
 	Matrix3::Matrix3()
 		: m()

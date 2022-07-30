@@ -119,12 +119,12 @@ namespace cc
 		T& operator[] (size_t index);
 		const T& operator[] (size_t index) const;
 
-		static T Dot(const Vector2T& u, const Vector2T& v);
+		static T Dot(const Vector2T<T>& u, const Vector2T<T>& v);
 		T LengthSquared();
 		T Length();
 
-		Vector2T& Normalize();
-		Vector2T Normalized() const;
+		Vector2T<T>& Normalize();
+		Vector2T<T> Normalized() const;
 
 		T x;
 		T y;
@@ -141,14 +141,14 @@ namespace cc
 		T& operator[] (size_t index);
 		const T& operator[] (size_t index) const;
 
-		static T Dot(const Vector3T& u, const Vector3T& v);
+		static T Dot(const Vector3T<T>& u, const Vector3T<T>& v);
 		T LengthSquared();
 		T Length();
 
-		Vector3T& Normalize();
-		Vector3T Normalized() const;
+		Vector3T<T>& Normalize();
+		Vector3T<T> Normalized() const;
 
-		static Vector3T Cross(const Vector3T<T>& u, const Vector3T<T>& v);
+		static Vector3T<T> Cross(const Vector3T<T>& u, const Vector3T<T>& v);
 
 		T x;
 		T y;
