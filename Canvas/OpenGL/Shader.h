@@ -8,8 +8,6 @@
 
 namespace cc
 {
-    struct Matrix4;
-
     class Shader
     {
     public:

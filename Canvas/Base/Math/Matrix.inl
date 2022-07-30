@@ -24,20 +24,6 @@ namespace cc
 		}
 
 		template<typename Matrix, size_t dim>
-		inline constexpr Matrix _cc_mat_mult(const Matrix& m, const Matrix& n)
-		{
-			Matrix result;
-			for (size_t i = 0; i < dim; i++)
-			{
-				for (size_t j = 0; j < dim; j++)
-				{
-					result[i][j] = m[i][j] * n[j][i];
-				}
-			}
-			return result;
-		}
-
-		template<typename Matrix, size_t dim>
 		inline constexpr void _cc_mat_tpose(Matrix& m)
 		{
 			for (size_t i = 0; i < dim; ++i)
@@ -255,7 +241,15 @@ namespace cc
 	template <typename T>
     inline Matrix3T<T> operator*(const Matrix3T<T>& m, const Matrix3T<T>& n)
 	{
-		return detail::_cc_mat_mult<Matrix3T, 3>(m, n);
+		Matrix4T<T> result;
+        for (size_t i = 0; i < 3; i++)
+        {
+            for (size_t j = 0; j < 3; j++)
+            {
+                result[i][j] = m[i][j] * n[j][i];
+            }
+        }
+        return result;
 	}
 
 
@@ -296,7 +290,15 @@ namespace cc
 	template <typename T>
     inline Matrix4T<T> operator*(const Matrix4T<T>& m, const Matrix4T<T>& n)
 	{
-		return detail::_cc_mat_mult<Matrix4T, 4>(m, n);
+		Matrix4T<T> result;
+        for (size_t i = 0; i < 4; i++)
+        {
+            for (size_t j = 0; j < 4; j++)
+            {
+                result[i][j] = m[i][j] * n[j][i];
+            }
+        }
+        return result;
 	}
 
 

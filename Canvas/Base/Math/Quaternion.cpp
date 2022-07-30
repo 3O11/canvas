@@ -22,7 +22,7 @@ namespace cc
     {
         Quaternion q;
 
-        q.v = axis.Normalized() * std::sin(angle / 2);
+        q.v = axis.Normalized() * Vector3(std::sin(angle / 2));
         q.s = std::cos(angle / 2);
         q.Normalize();
 
@@ -34,7 +34,7 @@ namespace cc
         Float length = std::sqrt(s * s + v.LengthSquared());
 
         s /= length;
-        v /= length;
+        v /= Vector3(length);
 
         return *this;
     }
@@ -117,7 +117,7 @@ namespace cc
         Quaternion q;
 
         q.s = u.s * v.s + Vector3::Dot(u.v, v.v);
-        q.v = (u.v * v.s) + (u.s * v.v) + Vector3::Cross(u.v, v.v);
+        q.v = (u.v * Vector3(v.s)) + (Vector3(u.s) * v.v) + Vector3::Cross(u.v, v.v);
 
         return q;
     }
@@ -160,7 +160,7 @@ namespace cc
 
     Quaternion operator*(const Quaternion& u, Float s)
     {
-        return Quaternion( u.s * s, u.v * s );
+        return Quaternion( u.s * s, u.v * Vector3(s));
     }
 
     Quaternion operator*(Float s, const Quaternion& u)
