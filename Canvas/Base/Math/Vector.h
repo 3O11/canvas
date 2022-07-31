@@ -1,10 +1,6 @@
 #ifndef _CC_VECTOR_H
 #define _CC_VECTOR_H
 
-#include "Utils.h"
-
-#include <cmath>
-
 namespace cc
 {
 	template <typename T>

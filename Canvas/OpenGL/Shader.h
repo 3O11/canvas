@@ -1,7 +1,7 @@
 #ifndef _CC_SHADER_H
 #define _CC_SHADER_H
 
-#include "Math.h"
+#include "CanvasMath.h"
 
 #include <string>
 #include <unordered_map>

@@ -7,7 +7,7 @@ add_library (canvas STATIC
 	"Base/Math/Transforms.cpp"
 	"Base/Math/Utils.h"
 	"Base/Math/Utils.cpp"
-	"Base/Math.h"
+	"Base/CanvasMath.h"
 	"Colour/RGB.h"
 	"Colour/RGB.cpp"
 	"Colour/ColourAtlas.h"

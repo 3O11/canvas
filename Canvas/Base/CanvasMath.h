@@ -1,12 +1,10 @@
 #ifndef _CC_MATH_H
 #define _CC_MATH_H
 
-#include <cstdint>
-#include <cstddef>
-
+#include "Math/Types.h"
 #include "Math/Vector.h"
 #include "Math/Matrix.h"
-#include "Math/Types.h"
+#include "Math/Quaternion.h"
 
 namespace cc
 {
@@ -16,6 +14,8 @@ namespace cc
 	
 	using Matrix3 = Matrix3T<float>;
 	using Matrix4 = Matrix4T<float>;
+
+	using Quaternion = QuaternionT<float>;
 }
 
 #endif //_CC_MATH_H
