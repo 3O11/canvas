@@ -7,43 +7,57 @@
 
 namespace cc
 {
-    struct Quaternion final
+    template <typename T>
+    struct QuaternionT final
     {
-        explicit Quaternion();
-        explicit Quaternion(Float s, const Vector3& v);
-        explicit Quaternion(Float s, Float i, Float j, Float k);
+        explicit QuaternionT();
+        explicit QuaternionT(T s, const Vector3T<T>& v);
+        explicit QuaternionT(T s, T i, T j, T k);
 
-        static Quaternion Make(Float angle, const Vector3& axis);
+        static QuaternionT<T> Make(T angle, const Vector3T<T>& axis);
 
-        Quaternion& Normalize();
-        Quaternion Normalized() const;
+        QuaternionT<T>& Normalize();
+        QuaternionT<T> Normalized() const;
 
-        Quaternion Conjugate() const;
+        QuaternionT<T> Conjugate() const;
 
-        Matrix3 ToMatrix3() const;
-        Matrix4 ToMatrix4() const;
+        Matrix3T<T> ToMatrix3() const;
+        Matrix4T<T> ToMatrix4() const;
 
-        Vector3 Rotate(const Vector3& u) const;
-        Vector4 Rotate(const Vector4& u) const;
+        Vector3T<T> Rotate(const Vector3T<T>& u) const;
+        Vector4T<T> Rotate(const Vector4T<T>& u) const;
 
-        Float s;
-        Vector3 v;
+        T s;
+        Vector3T<T> v;
     };
 
-    Quaternion operator+(const Quaternion& u, const Quaternion& v);
-    Quaternion operator-(const Quaternion& u, const Quaternion& v);
-    Quaternion operator*(const Quaternion& u, const Quaternion& v);
-    Quaternion operator-(const Quaternion& u);
+    template <typename T>
+    QuaternionT<T> operator+(const QuaternionT<T>& u, const QuaternionT<T>& v);
+    template <typename T>
+    QuaternionT<T> operator-(const QuaternionT<T>& u, const QuaternionT<T>& v);
+    template <typename T>
+    QuaternionT<T> operator*(const QuaternionT<T>& u, const QuaternionT<T>& v);
+    template <typename T>
+    QuaternionT<T> operator-(const QuaternionT<T>& u);
 
-    Quaternion& operator+=(Quaternion& u, const Quaternion& v);
-    Quaternion& operator-=(Quaternion& u, const Quaternion& v);
-    Quaternion& operator*=(Quaternion& u, const Quaternion& v);
+    template <typename T>
+    QuaternionT<T>& operator+=(QuaternionT<T>& u, const QuaternionT<T>& v);
+    template <typename T>
+    QuaternionT<T>& operator-=(QuaternionT<T>& u, const QuaternionT<T>& v);
+    template <typename T>
+    QuaternionT<T>& operator*=(QuaternionT<T>& u, const QuaternionT<T>& v);
 
-    Quaternion operator*(const Quaternion& u, Float s);
-    Quaternion operator*(Float s, const Quaternion& u);
+    template <typename T>
+    QuaternionT<T> operator*(const QuaternionT<T>& u, T s);
+    template <typename T>
+    QuaternionT<T> operator*(T s, const QuaternionT<T>& u);
 
-    Quaternion Lerp(Float value, const Quaternion& start, const Quaternion& end);
-    Quaternion Slerp(Float value, const Quaternion& start, const Quaternion& end);
+    template <typename T>
+    QuaternionT<T> Lerp(T value, const QuaternionT<T>& start, const QuaternionT<T>& end);
+    template <typename T>
+    QuaternionT<T> Slerp(T value, const QuaternionT<T>& start, const QuaternionT<T>& end);
 }
+
+#include "Quaternion.inl"
 
 #endif //_CC_QUATERNION_H
