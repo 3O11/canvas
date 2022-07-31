@@ -1,7 +1,7 @@
 #ifndef _CC_SHADER_H
 #define _CC_SHADER_H
 
-#include "Types.h"
+#include "Math.h"
 
 #include <string>
 #include <unordered_map>

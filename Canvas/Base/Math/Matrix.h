@@ -1,12 +1,9 @@
 #ifndef _CC_MATRIX_H
 #define _CC_MATRIX_H
 
-#include "Types.h"
-#include "Vector.h"
-
 #include <array>
 
-// TODO: add templates for additional matrix types, same as in Vector.h
+#include "Vector.h"
 
 namespace cc
 {

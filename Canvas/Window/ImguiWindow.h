@@ -13,16 +13,16 @@
 
 #include <string>
 
-namespace detail
-{
-    static void error_callback(int error, const char* description)
-    {
-        fprintf(stderr, "Error: %s\n", description);
-    }
-}
-
 namespace cc
 {
+    namespace detail
+    {
+        static void error_callback(int error, const char* description)
+        {
+            fprintf(stderr, "Error: %s\n", description);
+        }
+    }
+
     class ImguiWindow
     {
     public:

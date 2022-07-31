@@ -1,7 +1,7 @@
 #ifndef _CC_PRINT_FUNCTIONS_H
 #define _CC_PRINT_FUNCTIONS_H
 
-#include "Types.h"
+#include "Math.h"
 
 namespace cc
 {

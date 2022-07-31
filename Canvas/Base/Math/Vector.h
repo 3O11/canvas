@@ -1,11 +1,9 @@
 #ifndef _CC_VECTOR_H
 #define _CC_VECTOR_H
 
-#include "Types.h"
+#include "Utils.h"
 
 #include <cmath>
-
-// TODO: Add templates for additional Vector types, e.g. Vector3d, Vector3i
 
 namespace cc
 {

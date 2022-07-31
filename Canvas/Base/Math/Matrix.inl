@@ -1,96 +1,5 @@
 namespace cc
 {
-    namespace detail
-	{
-		template<typename Matrix, size_t dim, typename T>
-		inline constexpr void _cc_mat_fill(Matrix& m, T val)
-		{
-			for (size_t i = 0; i < dim; i++)
-			{
-				for (size_t j = 0; j < dim; j++)
-				{
-					m[i][j] = val;
-				}
-			}
-		}
-
-		template<typename Matrix, size_t dim, typename T>
-		inline constexpr void _cc_mat_fill_diag(Matrix& m, T val)
-		{
-			for (size_t i = 0; i < dim; i++)
-			{
-				m[i][i] = val;
-			}
-		}
-
-		template<typename Matrix, size_t dim>
-		inline constexpr void _cc_mat_tpose(Matrix& m)
-		{
-			for (size_t i = 0; i < dim; ++i)
-			{
-				for (size_t j = i + 1; j < dim; ++j)
-				{
-					std::swap(m[j][i], m[i][j]);
-				}
-			}
-		}
-
-		template<typename Matrix, size_t dim>
-		inline constexpr Matrix _cc_mat_cofactor(const Matrix& m, size_t row, size_t col)
-		{
-			size_t ci = 0, cj = 0;
-			Matrix cofactor;
-			for (size_t i = 0; i < dim; ++i)
-			{
-				if (i == row) continue;
-
-				for (size_t j = 0; j < dim; ++j)
-				{
-					if (j == col) continue;
-
-					cofactor[ci][cj++] = m[i][j];
-					if (cj - 1 == dim) { cj = 0; ci++; }
-				}
-			}
-
-			return cofactor;
-		}
-
-		/*template<typename Matrix, size_t dim>
-		inline constexpr Float _cc_mat_det(const Matrix& m)
-		{
-			if constexpr (dim == 1) return m[0][0];
-
-			Float det(0);
-			Matrix cofactor;
-			int sign = 1;
-			for (size_t i = 0; i < dim; i++)
-			{
-				cofactor = _cc_mat_cofactor<Matrix, dim>(m, 0, i);
-				det += sign * m[0][i] * _cc_mat_det<Matrix, dim - 1>(cofactor);
-
-				sign = -sign;
-			}
-
-			return det;
-		}*/
-
-		template<typename Matrix, size_t dim>
-		inline constexpr void _cc_mat_inv(Matrix& m)
-		{
-			size_t pivotRow = 0;
-			size_t pivotCol = 0;
-
-			for (size_t i = 0; i < dim; i++)
-			{
-				for (size_t j = 0; j < dim; j++)
-				{
-					m[pivotRow][pivotCol] = 0;
-				}
-			}
-		}
-	}
-
     template <typename T>
     inline Matrix3T<T>::Matrix3T()
 		: m()
@@ -100,7 +9,10 @@ namespace cc
     inline Matrix3T<T>::Matrix3T(T val)
 		: m()
 	{
-		detail::_cc_mat_fill_diag<Matrix3T<T>, 3>(*this, val);
+		for (size_t i = 0; i < 3; i++)
+        {
+            m[i][i] = val;
+        }
 	}
 
 	template <typename T>
@@ -126,7 +38,13 @@ namespace cc
 	template <typename T>
     inline Matrix3T<T>& Matrix3T<T>::Transpose()
 	{
-		detail::_cc_mat_tpose<Matrix3T, 3>(*this);
+        for (size_t i = 0; i < 3; ++i)
+        {
+            for (size_t j = i + 1; j < 3; ++j)
+            {
+                std::swap(m[j][i], m[i][j]);
+            }
+        }
 		return *this;
 	}
 
@@ -139,7 +57,6 @@ namespace cc
 	template <typename T>
     inline Matrix3T<T>& Matrix3T<T>::Invert()
 	{
-		detail::_cc_mat_inv<Matrix3T, 3>(*this);
 		return *this;
 	}
 
@@ -147,14 +64,12 @@ namespace cc
     inline Matrix3T<T> Matrix3T<T>::Inverse() const
 	{
 		Matrix3T inverse = *this;
-		detail::_cc_mat_inv<Matrix3T, 3>(inverse);
 		return inverse;
 	}
 
 	template <typename T>
     inline T Matrix3T<T>::Det() const
 	{
-		//return detail::_cc_mat_det<Matrix3T, 3>(*this);
 		return T(0);
 	}
 
@@ -167,7 +82,10 @@ namespace cc
     inline Matrix4T<T>::Matrix4T(T val)
 		: m()
 	{
-		detail::_cc_mat_fill_diag<Matrix4T, 4>(*this, val);
+		for (size_t i = 0; i < 4; i++)
+        {
+            m[i][i] = val;
+        }
 	}
 
 	template <typename T>
@@ -194,7 +112,13 @@ namespace cc
 	template <typename T>
     inline Matrix4T<T>& Matrix4T<T>::Transpose()
 	{
-		detail::_cc_mat_tpose<Matrix4T, 4>(*this);
+		for (size_t i = 0; i < 4; ++i)
+        {
+            for (size_t j = i + 1; j < 4; ++j)
+            {
+                std::swap(m[j][i], m[i][j]);
+            }
+        }
 		return *this;
 	}
 
@@ -207,7 +131,6 @@ namespace cc
 	template <typename T>
     inline Matrix4T<T>& Matrix4T<T>::Invert()
 	{
-		detail::_cc_mat_inv<Matrix4T, 4>(*this);
 		return *this;
 	}
 
@@ -215,14 +138,12 @@ namespace cc
     inline Matrix4T<T> Matrix4T<T>::Inverse() const
 	{
 		Matrix4T inverse = *this;
-		detail::_cc_mat_inv<Matrix4T, 4>(inverse);
 		return inverse;
 	}
 
 	template <typename T>
     inline T Matrix4T<T>::Det() const
 	{
-		//return detail::_cc_mat_det<Matrix4T, 3>(*this);
 		return T(0);
 	}
 
