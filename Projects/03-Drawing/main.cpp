@@ -344,7 +344,7 @@ int main()
 					point.y = radii.x * std::cos(t) * std::sin(angle) + radii.y * std::sin(t) * std::cos(angle);
 
 					point += center;
-					point *= scale;
+					point *= Vector2(scale);
 
 					canvas.Draw(point.x, point.y, {0.0f, 1.0f, 0.0f, 1.0f});
 				}
