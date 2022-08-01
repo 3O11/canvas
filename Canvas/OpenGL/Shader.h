@@ -1,15 +1,13 @@
 #ifndef _CC_SHADER_H
 #define _CC_SHADER_H
 
-#include "Types.h"
+#include "CanvasMath.h"
 
 #include <string>
 #include <unordered_map>
 
 namespace cc
 {
-    struct Matrix4;
-
     class Shader
     {
     public:

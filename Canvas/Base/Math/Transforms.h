@@ -1,9 +1,9 @@
 #ifndef _CC_TRANSFORMS_H
 #define _CC_TRANSFORMS_H
 
-#include "Types.h"
-#include "Vector.h"
-#include "Matrix.h"
+
+// This is temporary, needs to be removed later
+#include "CanvasMath.h"
 
 namespace cc
 {

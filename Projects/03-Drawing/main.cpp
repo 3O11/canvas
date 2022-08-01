@@ -4,14 +4,13 @@
 #include "Window.h"
 #include "RGB.h"
 #include "Image.h"
-#include "Canvas.h"
-#include "Shapes/Circle.h"
-#include "Drawing.h"
 #include "Texture.h"
 #include "Shader.h"
 #include "Vector.h"
 #include "Buffers.h"
 #include "Utils.h"
+
+#include "canvas.h"
 
 #include <memory>
 #include <cmath>
@@ -241,32 +240,8 @@ private:
 	Float m_disc;
 };
 
-#define USE_WINDOW
-
 int main()
 {
-#ifndef USE_WINDOW
-	// This is for use when creating a window isn't possible/desirable
-
-	Canvas c(1024, 1024, {1.0f, 1.0f, 1.0f, 0.0f});
-	c.SetOffset(512, 512); // Set the 0,0 coordinate to be the center of the image
-
-	// Draw a circle in the center of the image
-	//std::shared_ptr<cc::Circle> circle = std::make_shared<cc::Circle>(0, 0, 120);
-	//circle->Fill(true);
-	//c.Draw(circle, {1.0f, 0.6f, 0.0f, 0.5f});
-
-	std::shared_ptr<ConicSection> conic_section = std::make_shared<ConicSection>();
-	conic_section->SetParameters(52, -72, 73, -280, 290, 325);
-	conic_section->SetScale(1 / 128.0f); // Set the scale to draw a meaningful picture
-	conic_section->SetThreshold(1);
-	c.Draw(conic_section, {1.0f, 0.0f, 0.0f, 1.0f});
-
-	Image& i = c.ImageHandle();
-	Image::Save("Image.png", i, cc::ImageType::PNG);
-
-#else
-
 	ImguiWindow window("Conic sections", 640, 480);
 	window.SetClearColour({ 1.0f, 0.0f, 0.0f, 1.0f });
 
@@ -369,7 +344,7 @@ int main()
 					point.y = radii.x * std::cos(t) * std::sin(angle) + radii.y * std::sin(t) * std::cos(angle);
 
 					point += center;
-					point *= scale;
+					point *= Vector2(scale);
 
 					canvas.Draw(point.x, point.y, {0.0f, 1.0f, 0.0f, 1.0f});
 				}
@@ -390,6 +365,4 @@ int main()
 
 		window.EndFrame();
 	}
-
-#endif
 }
