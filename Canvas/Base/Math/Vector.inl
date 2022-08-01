@@ -62,7 +62,8 @@ namespace cc
 	template <typename T>
     inline Vector2T<T> Vector2T<T>::Normalized() const
 	{
-        auto normalized = Vector2T(*this).Normalize();
+        auto normalized = *this;
+		normalized.Normalize();
 		return normalized;
 	}
 
@@ -136,7 +137,8 @@ namespace cc
 	template <typename T>
     inline Vector3T<T> Vector3T<T>::Normalized() const
 	{
-        auto normalized = Vector3T(*this).Normalize();
+        auto normalized = *this;
+		normalized.Normalize();
 		return normalized;
 	}
 
@@ -235,7 +237,8 @@ namespace cc
 	template <typename T>
     inline Vector4T<T> Vector4T<T>::Normalized() const
 	{
-        auto normalized = Vector4T(*this).Normalize();
+        auto normalized = *this;
+		normalized.Normalize();
 		return normalized;
 	}
 

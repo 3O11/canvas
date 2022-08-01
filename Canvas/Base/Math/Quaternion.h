@@ -4,6 +4,7 @@
 #include "Types.h"
 #include "Vector.h"
 #include "Matrix.h"
+#include "Utils.h"
 
 namespace cc
 {

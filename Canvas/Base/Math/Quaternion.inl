@@ -26,9 +26,6 @@ namespace cc
         q.s = std::cos(angle / 2);
         q.Normalize();
 
-        q.v = axis;
-        q.s = angle;
-
         return q;
     }
 
